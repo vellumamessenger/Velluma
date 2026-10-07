@@ -47,15 +47,14 @@
         #bg-canvas { z-index: -2; }
         #effect-canvas { z-index: 99; }
 
-        /* Lightning Flash Effect */
         .lightning-flash {
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
-            background: rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.25);
             pointer-events: none;
             z-index: 98;
             opacity: 0;
-            transition: opacity 0.05s ease-out;
+            transition: opacity 0.04s ease-out;
         }
 
         /* Ambient Glows */
@@ -86,7 +85,6 @@
             backdrop-filter: var(--glass-blur);
             background: rgba(8, 9, 12, 0.7);
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            transition: all 0.3s ease;
         }
 
         nav {
@@ -106,7 +104,6 @@
             font-weight: 800;
             font-size: 24px;
             color: var(--text-main);
-            letter-spacing: -0.5px;
         }
 
         .logo-icon {
@@ -129,7 +126,7 @@
             padding: 2px 8px;
             border-radius: 12px;
             margin-left: 6px;
-            font-weight: 600;
+            font-weight: 700;
         }
 
         .nav-links {
@@ -249,7 +246,6 @@
             justify-content: center;
             font-weight: 700;
             color: var(--primary-orange);
-            position: relative;
         }
 
         .chat-body {
@@ -358,15 +354,15 @@
         }
 
         .maint-box {
-            max-width: 500px;
+            max-width: 520px;
             background: var(--card-bg);
             border: 1px solid var(--primary-orange);
             padding: 40px;
-            border-radius: 24px;
+            border-radius: 28px;
             box-shadow: 0 0 50px var(--primary-orange-glow);
         }
 
-        /* Creator Panel Floating Trigger */
+        /* Creator Access Trigger */
         .admin-trigger {
             position: fixed;
             bottom: 24px;
@@ -412,7 +408,7 @@
             border: 1px solid var(--primary-orange);
             border-radius: 24px;
             width: 90%;
-            max-width: 520px;
+            max-width: 540px;
             padding: 32px;
             box-shadow: 0 0 40px var(--primary-orange-glow);
             position: relative;
@@ -461,7 +457,7 @@
             background: rgba(255,255,255,0.05);
             border: 1px solid rgba(255,255,255,0.1);
             color: #fff;
-            padding: 8px;
+            padding: 10px 6px;
             border-radius: 8px;
             cursor: pointer;
             font-size: 12px;
@@ -500,12 +496,12 @@
     <div class="ambient-glow glow-1"></div>
     <div class="ambient-glow glow-2"></div>
 
-    <!-- Maintenance Screen for Normal Users -->
+    <!-- Maintenance Screen -->
     <div class="maint-overlay" id="maintOverlay">
         <div class="maint-box">
             <i class="fa-solid fa-screwdriver-wrench" style="font-size: 50px; color: var(--primary-orange); margin-bottom: 20px;"></i>
-            <h2 style="font-size: 28px; margin-bottom: 12px;">Технический перерыв трампампам</h2>
-            <p style="color: var(--text-muted); font-size: 15px;">Мы проводим плановое обслуживание сервера Velluma. Скоро вернемся в сеть!</p>
+            <h2 style="font-size: 26px; margin-bottom: 12px;">Технический перерыв</h2>
+            <p style="color: var(--text-muted); font-size: 15px; line-height: 1.6;">Мы проводим плановое обновление серверов и оборудования Velluma для улучшения стабильности работы. Пожалуйста, зайдите позже.</p>
         </div>
     </div>
 
@@ -520,7 +516,7 @@
                 <li><a href="#features">Возможности</a></li>
                 <li><a href="#chat">Демо</a></li>
             </ul>
-            <a href="#download" class="btn"><i class="fa-solid fa-download"></i> Установить</a>
+            <a href="#" class="btn download-link" onclick="downloadApk(event)"><i class="fa-solid fa-download"></i> Скачать</a>
         </nav>
     </header>
 
@@ -533,7 +529,7 @@
             <h1 class="hero-title">Общение без <span class="gradient-text">границ и рамок</span></h1>
             <p class="hero-desc">Скоростной, защищенный и современный мессенджер нового поколения.</p>
             <div class="hero-buttons">
-                <a href="#download" class="btn"><i class="fa-solid fa-download"></i> Скачать бесплатно</a>
+                <a href="#" class="btn download-link" onclick="downloadApk(event)"><i class="fa-brands fa-android"></i> Скачать для Android</a>
                 <a href="#chat" class="btn" style="background: rgba(255,255,255,0.05); box-shadow: none; border: 1px solid rgba(255,255,255,0.1);"><i class="fa-solid fa-comments"></i> Попробовать демо</a>
             </div>
         </div>
@@ -542,9 +538,7 @@
         <div class="phone-wrapper" id="chat">
             <div class="phone-card">
                 <div class="chat-header">
-                    <div class="chat-avatar">
-                        V
-                    </div>
+                    <div class="chat-avatar">V</div>
                     <div>
                         <div style="font-weight: 700; font-size: 15px;">Velluma Bot</div>
                         <div style="font-size: 12px; color: #10B981;">В сети</div>
@@ -622,24 +616,36 @@
 
                 <!-- 2. Version Control -->
                 <div class="admin-control-item">
-                    <strong>Версия сайта</strong>
+                    <strong>Изменить версию приложения</strong>
                     <div style="display: flex; gap: 8px; margin-top: 8px;">
                         <input type="text" id="versionInput" class="admin-input" style="margin: 0;" value="1.0">
                         <button class="btn" style="padding: 8px 16px; font-size: 13px;" onclick="updateVersion()">Сохранить</button>
                     </div>
                 </div>
 
-                <!-- 3. Weather & Visual Events -->
+                <!-- 3. Upload / Change APK File -->
+                <div class="admin-control-item">
+                    <strong>Загрузить / Сменить APK файл</strong>
+                    <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px; margin-bottom: 10px;">
+                        Текущий файл: <span id="currentApkName" style="color: var(--primary-orange);">velluma.apk</span>
+                    </div>
+                    <input type="file" id="apkFileInput" accept=".apk" style="display: none;" onchange="handleApkUpload(event)">
+                    <button class="btn" style="width: 100%; justify-content: center;" onclick="document.getElementById('apkFileInput').click()">
+                        <i class="fa-solid fa-upload"></i> Выбрать новый .APK файл
+                    </button>
+                </div>
+
+                <!-- 4. Real Weather & Visual Events -->
                 <div class="admin-control-item">
                     <strong>Атмосферные эффекты (Темы)</strong>
                     <div class="theme-buttons">
-                        <button class="theme-btn active" onclick="setEffect('none')">Выкл</button>
-                        <button class="theme-btn" onclick="setEffect('snow')">❄️ Снег</button>
-                        <button class="theme-btn" onclick="setEffect('rain')">🌧️ Дождь</button>
-                        <button class="theme-btn" onclick="setEffect('leaves')">🍂 Листья</button>
-                        <button class="theme-btn" onclick="setEffect('shadows')">🍃 Тень/Дым</button>
-                        <button class="theme-btn" onclick="setEffect('sparks')">🎆 Искры</button>
-                        <button class="theme-btn" onclick="setEffect('storm')">⚡ Гроза</button>
+                        <button class="theme-btn active" onclick="setEffect('none', event)">Выкл</button>
+                        <button class="theme-btn" onclick="setEffect('snow', event)">❄️ Снег</button>
+                        <button class="theme-btn" onclick="setEffect('rain', event)">🌧️ Дождь</button>
+                        <button class="theme-btn" onclick="setEffect('leaves', event)">🍂 Листья</button>
+                        <button class="theme-btn" onclick="setEffect('smoke', event)">💨 Дым / Тень</button>
+                        <button class="theme-btn" onclick="setEffect('sparks', event)">🎆 Искры</button>
+                        <button class="theme-btn" onclick="setEffect('storm', event)">⚡ Гроза</button>
                     </div>
                 </div>
             </div>
@@ -690,70 +696,79 @@
         }
         animateBg();
 
-        // Atmospheric Weather Effects Canvas
+        // High Quality Visual Effects Engine
         const effectCanvas = document.getElementById('effect-canvas');
         const effCtx = effectCanvas.getContext('2d');
         let activeEffect = 'none';
         let effectItems = [];
-        let stormInterval = null;
+        let stormTimer = null;
+        let bolts = [];
 
         window.addEventListener('resize', resizeCanvases);
         resizeCanvases();
 
-        class EffectItem {
+        class ParticleItem {
             constructor(type) {
                 this.type = type;
                 this.reset();
             }
             reset() {
                 this.x = Math.random() * effectCanvas.width;
-                this.y = Math.random() * -effectCanvas.height;
+                if (this.type === 'sparks') {
+                    this.y = effectCanvas.height + Math.random() * 20;
+                } else {
+                    this.y = Math.random() * -effectCanvas.height;
+                }
+
                 if (this.type === 'snow') {
                     this.size = Math.random() * 3 + 2;
                     this.speedY = Math.random() * 1.5 + 0.8;
-                    this.speedX = Math.random() * 0.8 - 0.4;
-                    this.opacity = Math.random() * 0.7 + 0.3;
-                } else if (this.type === 'rain') {
-                    this.length = Math.random() * 20 + 10;
-                    this.speedY = Math.random() * 10 + 12;
-                    this.speedX = -1;
-                    this.opacity = Math.random() * 0.4 + 0.2;
+                    this.speedX = Math.random() * 0.6 - 0.3;
+                    this.swing = Math.random() * 0.05;
+                    this.opacity = Math.random() * 0.8 + 0.2;
+                } else if (this.type === 'rain' || this.type === 'storm') {
+                    this.length = Math.random() * 25 + 15;
+                    this.speedY = Math.random() * 12 + 14;
+                    this.speedX = -2;
+                    this.opacity = Math.random() * 0.5 + 0.2;
                 } else if (this.type === 'leaves') {
-                    this.size = Math.random() * 8 + 6;
+                    this.size = Math.random() * 10 + 6;
                     this.speedY = Math.random() * 2 + 1;
-                    this.speedX = Math.sin(Math.random() * Math.PI) * 1.5;
+                    this.speedX = Math.random() * 1.5 - 0.75;
                     this.rotation = Math.random() * 360;
-                    this.rotSpeed = Math.random() * 2 - 1;
-                } else if (this.type === 'shadows') {
+                    this.rotSpeed = Math.random() * 3 - 1.5;
+                } else if (this.type === 'smoke') {
                     this.x = Math.random() * effectCanvas.width;
                     this.y = Math.random() * effectCanvas.height;
-                    this.size = Math.random() * 120 + 80;
-                    this.speedX = Math.random() * 0.6 - 0.3;
-                    this.opacity = Math.random() * 0.15 + 0.05;
+                    this.size = Math.random() * 150 + 100;
+                    this.speedX = Math.random() * 0.4 - 0.2;
+                    this.speedY = -Math.random() * 0.3;
+                    this.opacity = Math.random() * 0.12 + 0.03;
                 } else if (this.type === 'sparks') {
-                    this.size = Math.random() * 4 + 1;
-                    this.speedY = -(Math.random() * 2 + 0.5);
+                    this.size = Math.random() * 4 + 1.5;
+                    this.speedY = -(Math.random() * 3 + 1);
                     this.speedX = Math.random() * 2 - 1;
                     this.opacity = 1;
                 }
             }
             update() {
                 if (this.type === 'snow') {
+                    this.speedX += Math.sin(this.y * 0.01) * this.swing;
                     this.y += this.speedY; this.x += this.speedX;
                     if (this.y > effectCanvas.height) this.reset();
-                } else if (this.type === 'rain') {
+                } else if (this.type === 'rain' || this.type === 'storm') {
                     this.y += this.speedY; this.x += this.speedX;
                     if (this.y > effectCanvas.height) this.reset();
                 } else if (this.type === 'leaves') {
-                    this.y += this.speedY; this.x += this.speedX;
+                    this.y += this.speedY; this.x += Math.sin(this.y * 0.02) * 1.5;
                     this.rotation += this.rotSpeed;
                     if (this.y > effectCanvas.height) this.reset();
-                } else if (this.type === 'shadows') {
-                    this.x += this.speedX;
-                    if (this.x > effectCanvas.width + 100 || this.x < -100) this.speedX *= -1;
+                } else if (this.type === 'smoke') {
+                    this.x += this.speedX; this.y += this.speedY;
+                    if (this.y < -150) this.y = effectCanvas.height + 150;
                 } else if (this.type === 'sparks') {
                     this.y += this.speedY; this.x += this.speedX;
-                    this.opacity -= 0.01;
+                    this.opacity -= 0.008;
                     if (this.opacity <= 0 || this.y < 0) this.reset();
                 }
             }
@@ -764,8 +779,8 @@
                     effCtx.beginPath();
                     effCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
                     effCtx.fill();
-                } else if (this.type === 'rain') {
-                    effCtx.strokeStyle = `rgba(120, 180, 255, ${this.opacity})`;
+                } else if (this.type === 'rain' || this.type === 'storm') {
+                    effCtx.strokeStyle = `rgba(160, 200, 255, ${this.opacity})`;
                     effCtx.lineWidth = 1.5;
                     effCtx.beginPath();
                     effCtx.moveTo(this.x, this.y);
@@ -776,18 +791,21 @@
                     effCtx.rotate((this.rotation * Math.PI) / 180);
                     effCtx.fillStyle = '#FF6B00';
                     effCtx.beginPath();
-                    effCtx.ellipse(0, 0, this.size, this.size / 2, 0, 0, Math.PI * 2);
+                    effCtx.ellipse(0, 0, this.size, this.size / 2.2, 0, 0, Math.PI * 2);
                     effCtx.fill();
-                } else if (this.type === 'shadows') {
+                } else if (this.type === 'smoke') {
                     let grad = effCtx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.size);
-                    grad.addColorStop(0, `rgba(0, 0, 0, ${this.opacity})`);
-                    grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+                    grad.addColorStop(0, `rgba(255, 107, 0, ${this.opacity})`);
+                    grad.addColorStop(0.5, `rgba(20, 20, 30, ${this.opacity * 1.5})`);
+                    grad.addColorStop(1, 'rgba(0,0,0,0)');
                     effCtx.fillStyle = grad;
                     effCtx.beginPath();
                     effCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
                     effCtx.fill();
                 } else if (this.type === 'sparks') {
                     effCtx.fillStyle = `rgba(255, 136, 0, ${this.opacity})`;
+                    effCtx.shadowColor = '#FF6B00';
+                    effCtx.shadowBlur = 8;
                     effCtx.beginPath();
                     effCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
                     effCtx.fill();
@@ -796,46 +814,82 @@
             }
         }
 
-        function setEffect(effect) {
+        // Realistic Lightning Constructor
+        function createLightningBolt() {
+            let startX = Math.random() * effectCanvas.width;
+            let startY = 0;
+            let segments = [];
+            let currX = startX;
+            let currY = startY;
+
+            while (currY < effectCanvas.height * 0.7) {
+                let nextX = currX + (Math.random() * 60 - 30);
+                let nextY = currY + (Math.random() * 40 + 20);
+                segments.push({ x1: currX, y1: currY, x2: nextX, y2: nextY });
+                currX = nextX;
+                currY = nextY;
+            }
+            return segments;
+        }
+
+        function setEffect(effect, evt) {
             activeEffect = effect;
             effectItems = [];
-            clearInterval(stormInterval);
+            bolts = [];
+            clearInterval(stormTimer);
 
-            // Update active button style
             document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.remove('active'));
-            event?.target?.classList.add('active');
+            if (evt && evt.target) evt.target.classList.add('active');
 
             let count = 0;
-            if (effect === 'snow') count = 70;
-            else if (effect === 'rain') count = 100;
-            else if (effect === 'leaves') count = 35;
-            else if (effect === 'shadows') count = 15;
-            else if (effect === 'sparks') count = 60;
+            if (effect === 'snow') count = 80;
+            else if (effect === 'rain') count = 110;
+            else if (effect === 'leaves') count = 40;
+            else if (effect === 'smoke') count = 20;
+            else if (effect === 'sparks') count = 70;
             else if (effect === 'storm') {
-                count = 120;
-                effect = 'rain';
-                stormInterval = setInterval(() => {
-                    if (Math.random() > 0.6) {
+                count = 130;
+                stormTimer = setInterval(() => {
+                    if (Math.random() > 0.5) {
+                        bolts = createLightningBolt();
                         const lightning = document.getElementById('lightning');
                         lightning.style.opacity = '1';
-                        setTimeout(() => { lightning.style.opacity = '0'; }, 80);
+                        setTimeout(() => { lightning.style.opacity = '0'; }, 60);
+                        setTimeout(() => { bolts = []; }, 150);
                     }
-                }, 3000);
+                }, 2500);
             }
 
             for (let i = 0; i < count; i++) {
-                effectItems.push(new EffectItem(effect));
+                effectItems.push(new ParticleItem(effect));
             }
         }
 
         function animateEffects() {
             effCtx.clearRect(0, 0, effectCanvas.width, effectCanvas.height);
             effectItems.forEach(item => { item.update(); item.draw(); });
+
+            // Draw Lightning Bolts if Storm Active
+            if (bolts.length > 0) {
+                effCtx.save();
+                effCtx.strokeStyle = '#FFFFFF';
+                effCtx.lineWidth = 3;
+                effCtx.shadowColor = '#FF8800';
+                effCtx.shadowBlur = 15;
+                effCtx.beginPath();
+                bolts.forEach(b => {
+                    effCtx.moveTo(b.x1, b.y1);
+                    effCtx.lineTo(b.x2, b.y2);
+                });
+                effCtx.stroke();
+                effCtx.restore();
+            }
+
             requestAnimationFrame(animateEffects);
         }
         animateEffects();
 
-        // Interactive Chat Demo
+        // Chat Bot Demo
         const chatInput = document.getElementById('chat-input');
         const sendBtn = document.getElementById('send-btn');
         const chatMessages = document.getElementById('chat-messages');
@@ -866,6 +920,7 @@
 
         // Admin Modal & Maintenance Controls
         let isMaintenance = false;
+        let currentApkUrl = 'velluma.apk'; // Исходный файл по умолчанию
 
         function toggleAdminModal() {
             const modal = document.getElementById('adminModal');
@@ -874,7 +929,7 @@
 
         function checkPin() {
             const pin = document.getElementById('adminPin').value;
-            if (pin === '29582422') { // Пароль: 29582422
+            if (pin === '29582422') {
                 document.getElementById('pinScreen').style.display = 'none';
                 document.getElementById('adminDashboard').style.display = 'block';
             } else {
@@ -903,8 +958,29 @@
             if (newVer) {
                 document.getElementById('appVersion').textContent = 'v' + newVer;
                 document.getElementById('badgeVersion').textContent = 'v' + newVer;
-                alert('Версия изменена на v' + newVer);
+                alert('Версия приложения изменена на v' + newVer);
             }
+        }
+
+        // Handle Uploading New APK File
+        function handleApkUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                currentApkUrl = URL.createObjectURL(file);
+                document.getElementById('currentApkName').textContent = file.name;
+                alert('Новый APK файл успешно загружен! Теперь кнопка "Скачать" будет выдавать этот файл.');
+            }
+        }
+
+        // Trigger Download
+        function downloadApk(e) {
+            e.preventDefault();
+            const a = document.createElement('a');
+            a.href = currentApkUrl;
+            a.download = document.getElementById('currentApkName').textContent || 'velluma.apk';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
         }
     </script>
 </body>
