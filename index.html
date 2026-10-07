@@ -19,55 +19,16 @@
             --glass-blur: blur(16px);
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            scroll-behavior: smooth;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; scroll-behavior: smooth; }
+        body { background-color: var(--bg-color); color: var(--text-main); overflow-x: hidden; position: relative; }
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            overflow-x: hidden;
-            position: relative;
-        }
-
-        /* Canvas Backgrounds */
-        #bg-canvas, #effect-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            pointer-events: none;
-        }
-
+        #bg-canvas, #effect-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; }
         #bg-canvas { z-index: -2; }
         #effect-canvas { z-index: 99; }
 
-        .lightning-flash {
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            background: rgba(255, 255, 255, 0.25);
-            pointer-events: none;
-            z-index: 98;
-            opacity: 0;
-            transition: opacity 0.08s ease-out;
-        }
+        .lightning-flash { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(255, 255, 255, 0.25); pointer-events: none; z-index: 98; opacity: 0; transition: opacity 0.08s ease-out; }
 
-        /* Ambient Glows */
-        .ambient-glow {
-            position: fixed;
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle, rgba(255,107,0,0.15) 0%, rgba(0,0,0,0) 70%);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: -1;
-            animation: pulse-glow 8s infinite alternate ease-in-out;
-        }
+        .ambient-glow { position: fixed; width: 600px; height: 600px; background: radial-gradient(circle, rgba(255,107,0,0.15) 0%, rgba(0,0,0,0) 70%); border-radius: 50%; pointer-events: none; z-index: -1; animation: pulse-glow 8s infinite alternate ease-in-out; }
         .glow-1 { top: -200px; left: -200px; }
         .glow-2 { bottom: -200px; right: -200px; background: radial-gradient(circle, rgba(255,136,0,0.12) 0%, rgba(0,0,0,0) 70%); }
 
@@ -76,403 +37,74 @@
             100% { transform: scale(1.2) translate(40px, 30px); opacity: 1; }
         }
 
-        /* Header & Navigation */
-        header {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 1000;
-            backdrop-filter: var(--glass-blur);
-            background: rgba(8, 9, 12, 0.7);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
+        header { position: fixed; top: 0; width: 100%; z-index: 1000; backdrop-filter: var(--glass-blur); background: rgba(8, 9, 12, 0.7); border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+        nav { max-width: 1200px; margin: 0 auto; padding: 20px 24px; display: flex; justify-content: space-between; align-items: center; }
+        
+        .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; font-weight: 800; font-size: 24px; color: var(--text-main); }
+        .logo-icon { width: 42px; height: 42px; background: linear-gradient(135deg, var(--primary-orange), var(--accent-orange)); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #fff; box-shadow: 0 0 20px var(--primary-orange-glow); }
+        .version-tag { font-size: 11px; background: rgba(255, 107, 0, 0.2); color: var(--primary-orange); border: 1px solid var(--card-border); padding: 2px 8px; border-radius: 12px; margin-left: 6px; font-weight: 700; }
 
-        nav {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px 24px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            text-decoration: none;
-            font-weight: 800;
-            font-size: 24px;
-            color: var(--text-main);
-        }
-
-        .logo-icon {
-            width: 42px;
-            height: 42px;
-            background: linear-gradient(135deg, var(--primary-orange), var(--accent-orange));
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #fff;
-            box-shadow: 0 0 20px var(--primary-orange-glow);
-        }
-
-        .version-tag {
-            font-size: 11px;
-            background: rgba(255, 107, 0, 0.2);
-            color: var(--primary-orange);
-            border: 1px solid var(--card-border);
-            padding: 2px 8px;
-            border-radius: 12px;
-            margin-left: 6px;
-            font-weight: 700;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 32px;
-            list-style: none;
-        }
-
-        .nav-links a {
-            color: var(--text-muted);
-            text-decoration: none;
-            font-weight: 500;
-            transition: 0.3s;
-        }
-
+        .nav-links { display: flex; gap: 32px; list-style: none; }
+        .nav-links a { color: var(--text-muted); text-decoration: none; font-weight: 500; transition: 0.3s; }
         .nav-links a:hover { color: var(--primary-orange); }
 
-        .btn {
-            background: linear-gradient(135deg, var(--primary-orange), var(--accent-orange));
-            color: #fff;
-            padding: 12px 28px;
-            border-radius: 12px;
-            text-decoration: none;
-            font-weight: 600;
-            border: none;
-            cursor: pointer;
-            box-shadow: 0 4px 20px var(--primary-orange-glow);
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-        }
+        .btn { background: linear-gradient(135deg, var(--primary-orange), var(--accent-orange)); color: #fff; padding: 12px 28px; border-radius: 12px; text-decoration: none; font-weight: 600; border: none; cursor: pointer; box-shadow: 0 4px 20px var(--primary-orange-glow); transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 10px; }
+        .btn:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 8px 30px var(--primary-orange-glow); }
 
-        .btn:hover {
-            transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 8px 30px var(--primary-orange-glow);
-        }
+        /* Оверлей скачивания */
+        .dl-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(8, 9, 12, 0.92); backdrop-filter: blur(16px); z-index: 5000; display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+        .dl-overlay.active { display: flex; }
+        .dl-card { background: var(--card-bg); border: 1px solid var(--primary-orange); padding: 40px; border-radius: 28px; box-shadow: 0 0 50px var(--primary-orange-glow); width: 90%; max-width: 420px; }
+        .dl-icon-wrapper { position: relative; width: 80px; height: 80px; margin: 0 auto 24px; }
+        .dl-icon-circle { width: 100%; height: 100%; border-radius: 50%; background: rgba(255, 107, 0, 0.1); border: 2px dashed var(--primary-orange); display: flex; align-items: center; justify-content: center; font-size: 32px; color: var(--primary-orange); animation: spin-border 8s linear infinite; }
+        @keyframes spin-border { 100% { transform: rotate(360deg); } }
+        .dl-progress-bar { width: 100%; height: 8px; background: rgba(255, 255, 255, 0.1); border-radius: 10px; overflow: hidden; margin: 20px 0 10px; }
+        .dl-progress-fill { width: 0%; height: 100%; background: linear-gradient(90deg, var(--primary-orange), var(--accent-orange)); box-shadow: 0 0 12px var(--primary-orange); transition: width 0.1s linear; }
 
-        /* Hero Section */
-        .hero {
-            padding: 180px 24px 100px;
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 60px;
-            align-items: center;
-        }
+        /* Контент страницы */
+        .hero { padding: 180px 24px 100px; max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+        .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(255, 107, 0, 0.1); border: 1px solid rgba(255, 107, 0, 0.3); padding: 8px 16px; border-radius: 30px; color: var(--primary-orange); font-weight: 600; font-size: 14px; margin-bottom: 24px; }
+        .hero-title { font-size: 58px; line-height: 1.1; font-weight: 800; margin-bottom: 24px; }
+        .gradient-text { background: linear-gradient(135deg, #FFF 0%, var(--primary-orange) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero-desc { font-size: 18px; color: var(--text-muted); line-height: 1.6; margin-bottom: 40px; }
+        .hero-buttons { display: flex; gap: 16px; flex-wrap: wrap; }
 
-        .hero-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(255, 107, 0, 0.1);
-            border: 1px solid rgba(255, 107, 0, 0.3);
-            padding: 8px 16px;
-            border-radius: 30px;
-            color: var(--primary-orange);
-            font-weight: 600;
-            font-size: 14px;
-            margin-bottom: 24px;
-        }
+        .phone-card { background: var(--card-bg); backdrop-filter: var(--glass-blur); border: 1px solid var(--card-border); border-radius: 32px; padding: 24px; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5); }
+        .chat-header { display: flex; align-items: center; gap: 12px; padding-bottom: 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
+        .chat-avatar { width: 44px; height: 44px; border-radius: 50%; background: #252B3B; display: flex; align-items: center; justify-content: center; font-weight: 700; color: var(--primary-orange); }
+        .chat-body { height: 300px; padding: 16px 0; display: flex; flex-direction: column; gap: 12px; overflow-y: auto; }
+        .message { max-width: 80%; padding: 12px 16px; border-radius: 18px; font-size: 14px; line-height: 1.4; }
+        .msg-in { background: rgba(255, 255, 255, 0.05); align-self: flex-start; border-bottom-left-radius: 4px; }
+        .msg-out { background: linear-gradient(135deg, var(--primary-orange), var(--accent-orange)); color: #fff; align-self: flex-end; border-bottom-right-radius: 4px; }
+        .chat-input-box { display: flex; gap: 8px; padding-top: 12px; border-top: 1px solid rgba(255, 255, 255, 0.08); }
+        .chat-input-box input { flex: 1; background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.1); padding: 12px 16px; border-radius: 12px; color: #fff; outline: none; }
 
-        .hero-title {
-            font-size: 58px;
-            line-height: 1.1;
-            font-weight: 800;
-            margin-bottom: 24px;
-        }
+        .features { max-width: 1200px; margin: 100px auto; padding: 0 24px; }
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
+        .feature-card { background: var(--card-bg); backdrop-filter: var(--glass-blur); border: 1px solid var(--card-border); padding: 32px; border-radius: 24px; transition: 0.3s; }
+        .feature-card:hover { transform: translateY(-8px); border-color: var(--primary-orange); }
+        .feature-icon { width: 56px; height: 56px; background: rgba(255, 107, 0, 0.1); border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 24px; color: var(--primary-orange); margin-bottom: 20px; }
 
-        .gradient-text {
-            background: linear-gradient(135deg, #FFF 0%, var(--primary-orange) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .hero-desc {
-            font-size: 18px;
-            color: var(--text-muted);
-            line-height: 1.6;
-            margin-bottom: 40px;
-        }
-
-        .hero-buttons {
-            display: flex;
-            gap: 16px;
-            flex-wrap: wrap;
-        }
-
-        /* Phone Demo */
-        .phone-card {
-            background: var(--card-bg);
-            backdrop-filter: var(--glass-blur);
-            border: 1px solid var(--card-border);
-            border-radius: 32px;
-            padding: 24px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-        }
-
-        .chat-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding-bottom: 16px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-        }
-
-        .chat-avatar {
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            background: #252B3B;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            color: var(--primary-orange);
-        }
-
-        .chat-body {
-            height: 300px;
-            padding: 16px 0;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            overflow-y: auto;
-        }
-
-        .message {
-            max-width: 80%;
-            padding: 12px 16px;
-            border-radius: 18px;
-            font-size: 14px;
-            line-height: 1.4;
-        }
-
-        .msg-in {
-            background: rgba(255, 255, 255, 0.05);
-            align-self: flex-start;
-            border-bottom-left-radius: 4px;
-        }
-
-        .msg-out {
-            background: linear-gradient(135deg, var(--primary-orange), var(--accent-orange));
-            color: #fff;
-            align-self: flex-end;
-            border-bottom-right-radius: 4px;
-        }
-
-        .chat-input-box {
-            display: flex;
-            gap: 8px;
-            padding-top: 12px;
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
-        }
-
-        .chat-input-box input {
-            flex: 1;
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 12px 16px;
-            border-radius: 12px;
-            color: #fff;
-            outline: none;
-        }
-
-        /* Features Section */
-        .features {
-            max-width: 1200px;
-            margin: 100px auto;
-            padding: 0 24px;
-        }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 24px;
-        }
-
-        .feature-card {
-            background: var(--card-bg);
-            backdrop-filter: var(--glass-blur);
-            border: 1px solid var(--card-border);
-            padding: 32px;
-            border-radius: 24px;
-            transition: 0.3s;
-        }
-
-        .feature-card:hover {
-            transform: translateY(-8px);
-            border-color: var(--primary-orange);
-        }
-
-        .feature-icon {
-            width: 56px;
-            height: 56px;
-            background: rgba(255, 107, 0, 0.1);
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            color: var(--primary-orange);
-            margin-bottom: 20px;
-        }
-
-        /* Maintenance Overlay */
-        .maint-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            background: #08090C;
-            z-index: 2500;
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 24px;
-        }
-
+        .maint-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #08090C; z-index: 2500; display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 24px; }
         .maint-overlay.active { display: flex; }
+        .maint-box { max-width: 520px; background: var(--card-bg); border: 1px solid var(--primary-orange); padding: 40px; border-radius: 28px; box-shadow: 0 0 50px var(--primary-orange-glow); }
 
-        .maint-box {
-            max-width: 520px;
-            background: var(--card-bg);
-            border: 1px solid var(--primary-orange);
-            padding: 40px;
-            border-radius: 28px;
-            box-shadow: 0 0 50px var(--primary-orange-glow);
-        }
-
-        /* Creator Access Trigger */
-        .admin-trigger {
-            position: fixed;
-            bottom: 24px;
-            left: 24px;
-            width: 48px;
-            height: 48px;
-            background: rgba(22, 26, 36, 0.9);
-            border: 1px solid var(--primary-orange);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--primary-orange);
-            cursor: pointer;
-            z-index: 3500;
-            backdrop-filter: var(--glass-blur);
-            box-shadow: 0 0 15px var(--primary-orange-glow);
-            transition: 0.3s;
-        }
-
+        .admin-trigger { position: fixed; bottom: 24px; left: 24px; width: 48px; height: 48px; background: rgba(22, 26, 36, 0.9); border: 1px solid var(--primary-orange); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--primary-orange); cursor: pointer; z-index: 3500; backdrop-filter: var(--glass-blur); box-shadow: 0 0 15px var(--primary-orange-glow); transition: 0.3s; }
         .admin-trigger:hover { transform: scale(1.1) rotate(15deg); }
 
-        /* Admin Modal */
-        .admin-modal {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(12px);
-            z-index: 4000;
-            display: none;
-            align-items: center;
-            justify-content: center;
-        }
-
+        .admin-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(12px); z-index: 4000; display: none; align-items: center; justify-content: center; }
         .admin-modal.active { display: flex; }
+        .admin-box { background: #121620; border: 1px solid var(--primary-orange); border-radius: 24px; width: 90%; max-width: 540px; padding: 32px; box-shadow: 0 0 40px var(--primary-orange-glow); position: relative; }
+        .admin-close { position: absolute; top: 20px; right: 20px; color: var(--text-muted); cursor: pointer; font-size: 20px; }
 
-        .admin-box {
-            background: #121620;
-            border: 1px solid var(--primary-orange);
-            border-radius: 24px;
-            width: 90%;
-            max-width: 540px;
-            padding: 32px;
-            box-shadow: 0 0 40px var(--primary-orange-glow);
-            position: relative;
-        }
-
-        .admin-close {
-            position: absolute;
-            top: 20px; right: 20px;
-            color: var(--text-muted);
-            cursor: pointer;
-            font-size: 20px;
-        }
-
-        .admin-pin-screen input, .admin-input {
-            width: 100%;
-            padding: 12px 16px;
-            margin: 10px 0 20px;
-            background: rgba(0,0,0,0.4);
-            border: 1px solid var(--card-border);
-            border-radius: 12px;
-            color: #fff;
-            font-size: 16px;
-            outline: none;
-        }
-
+        .admin-pin-screen input, .admin-input { width: 100%; padding: 12px 16px; margin: 10px 0 20px; background: rgba(0,0,0,0.4); border: 1px solid var(--card-border); border-radius: 12px; color: #fff; font-size: 16px; outline: none; }
         .admin-dashboard { display: none; }
+        .admin-control-item { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); padding: 16px; border-radius: 16px; margin-bottom: 16px; }
 
-        .admin-control-item {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            padding: 16px;
-            border-radius: 16px;
-            margin-bottom: 16px;
-        }
-
-        .theme-buttons {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-            margin-top: 10px;
-        }
-
-        .theme-btn {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            color: #fff;
-            padding: 10px 6px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 12px;
-            transition: 0.2s;
-        }
-
-        .theme-btn:hover, .theme-btn.active {
-            background: var(--primary-orange);
-            border-color: var(--primary-orange);
-        }
-
-        footer {
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            padding: 40px 24px;
-            text-align: center;
-            color: var(--text-muted);
-            font-size: 14px;
-        }
+        footer { border-top: 1px solid rgba(255, 255, 255, 0.05); padding: 40px 24px; text-align: center; color: var(--text-muted); font-size: 14px; }
 
         @media (max-width: 968px) {
-            .hero {
-                grid-template-columns: 1fr;
-                text-align: center;
-                padding-top: 140px;
-            }
+            .hero { grid-template-columns: 1fr; text-align: center; padding-top: 140px; }
             .hero-buttons { justify-content: center; }
             .nav-links { display: none; }
         }
@@ -486,7 +118,20 @@
     <div class="ambient-glow glow-1"></div>
     <div class="ambient-glow glow-2"></div>
 
-    <!-- Maintenance Screen -->
+    <!-- Анимация скачивания -->
+    <div class="dl-overlay" id="downloadOverlay">
+        <div class="dl-card">
+            <div class="dl-icon-wrapper">
+                <div class="dl-icon-circle"><i class="fa-solid fa-cloud-arrow-down" id="dlIcon"></i></div>
+            </div>
+            <h3 id="dlStatusTitle" style="font-size: 20px; margin-bottom: 8px;">Подготовка файла...</h3>
+            <p id="dlStatusText" style="color: var(--text-muted); font-size: 13px;">Установка соединения с сервером Velluma</p>
+            <div class="dl-progress-bar"><div class="dl-progress-fill" id="dlProgress"></div></div>
+            <div id="dlPercent" style="font-size: 12px; color: var(--primary-orange); font-weight: 700;">0%</div>
+        </div>
+    </div>
+
+    <!-- Технический перерыв -->
     <div class="maint-overlay" id="maintOverlay">
         <div class="maint-box">
             <i class="fa-solid fa-screwdriver-wrench" style="font-size: 50px; color: var(--primary-orange); margin-bottom: 20px;"></i>
@@ -495,7 +140,7 @@
         </div>
     </div>
 
-    <!-- Header -->
+    <!-- Шапка -->
     <header>
         <nav>
             <a href="#" class="logo">
@@ -506,11 +151,11 @@
                 <li><a href="#features">Возможности</a></li>
                 <li><a href="#chat">Демо</a></li>
             </ul>
-            <a href="#" class="btn download-link" onclick="downloadApk(event)"><i class="fa-solid fa-download"></i> Скачать</a>
+            <a href="#" class="btn download-link" onclick="triggerAnimatedDownload(event)"><i class="fa-solid fa-download"></i> Скачать</a>
         </nav>
     </header>
 
-    <!-- Hero Section -->
+    <!-- Главный блок -->
     <section class="hero">
         <div class="hero-content">
             <div class="hero-badge">
@@ -519,12 +164,11 @@
             <h1 class="hero-title">Общение без <span class="gradient-text">границ и рамок</span></h1>
             <p class="hero-desc">Скоростной, защищенный и современный мессенджер нового поколения.</p>
             <div class="hero-buttons">
-                <a href="#" class="btn download-link" onclick="downloadApk(event)"><i class="fa-brands fa-android"></i> Скачать для Android</a>
+                <a href="#" class="btn download-link" onclick="triggerAnimatedDownload(event)"><i class="fa-brands fa-android"></i> Скачать для Android</a>
                 <a href="#chat" class="btn" style="background: rgba(255,255,255,0.05); box-shadow: none; border: 1px solid rgba(255,255,255,0.1);"><i class="fa-solid fa-comments"></i> Попробовать демо</a>
             </div>
         </div>
 
-        <!-- Phone Demo -->
         <div class="phone-wrapper" id="chat">
             <div class="phone-card">
                 <div class="chat-header">
@@ -546,7 +190,7 @@
         </div>
     </section>
 
-    <!-- Features -->
+    <!-- Карточки -->
     <section class="features" id="features">
         <div class="features-grid">
             <div class="feature-card">
@@ -567,21 +211,14 @@
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer>
-        <p>&copy; 2026 Velluma Messenger. Все права защищены.</p>
-    </footer>
+    <footer><p>&copy; 2026 Velluma Messenger. Все права защищены.</p></footer>
 
-    <!-- Creator Access Trigger -->
-    <div class="admin-trigger" onclick="toggleAdminModal()" title="Панель Создателя">
-        <i class="fa-solid fa-user-shield"></i>
-    </div>
+    <!-- Секретный вход для создателя -->
+    <div class="admin-trigger" onclick="toggleAdminModal()" title="Панель Создателя"><i class="fa-solid fa-user-shield"></i></div>
 
-    <!-- Creator Modal -->
     <div class="admin-modal" id="adminModal">
         <div class="admin-box">
             <i class="fa-solid fa-xmark admin-close" onclick="toggleAdminModal()"></i>
-            
             <div class="admin-pin-screen" id="pinScreen">
                 <i class="fa-solid fa-lock" style="font-size: 40px; color: var(--primary-orange); margin-bottom: 16px;"></i>
                 <h3>Вход для Создателя</h3>
@@ -589,66 +226,102 @@
                 <input type="password" id="adminPin" maxlength="10" placeholder="••••••••">
                 <button class="btn" style="width: 100%; justify-content: center;" onclick="checkPin()">Войти</button>
             </div>
-
             <div class="admin-dashboard" id="adminDashboard">
-                <h3 style="margin-bottom: 20px; color: var(--primary-orange);"><i class="fa-solid fa-crown"></i> Панель Создателя</h3>
-                
-                <div class="admin-control-item">
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <div>
-                            <strong>Технический перерыв</strong>
-                            <div style="font-size: 12px; color: var(--text-muted);">Блокирует доступ для всех</div>
-                        </div>
-                        <button class="btn" id="maintToggleBtn" style="padding: 8px 16px; font-size: 13px;" onclick="toggleMaintenance()">Включить</button>
-                    </div>
-                </div>
-
-                <div class="admin-control-item">
-                    <strong>Изменить версию приложения</strong>
-                    <div style="display: flex; gap: 8px; margin-top: 8px;">
-                        <input type="text" id="versionInput" class="admin-input" style="margin: 0;" value="1.0">
-                        <button class="btn" style="padding: 8px 16px; font-size: 13px;" onclick="updateVersion()">Сохранить</button>
-                    </div>
-                </div>
-
-                <div class="admin-control-item">
-                    <strong>Загрузить / Сменить APK файл</strong>
-                    <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px; margin-bottom: 10px;">
-                        Текущий файл: <span id="currentApkName" style="color: var(--primary-orange);">velluma.apk</span>
-                    </div>
-                    <input type="file" id="apkFileInput" accept=".apk" style="display: none;" onchange="handleApkUpload(event)">
-                    <button class="btn" style="width: 100%; justify-content: center;" onclick="document.getElementById('apkFileInput').click()">
-                        <i class="fa-solid fa-upload"></i> Выбрать новый .APK файл
-                    </button>
-                </div>
-
-                <div class="admin-control-item">
-                    <strong>Атмосферные эффекты (Темы)</strong>
-                    <div class="theme-buttons">
-                        <button class="theme-btn active" onclick="setEffect('none', event)">Выкл</button>
-                        <button class="theme-btn" onclick="setEffect('snow', event)">❄️ Снег</button>
-                        <button class="theme-btn" onclick="setEffect('rain', event)">🌧️ Дождь</button>
-                        <button class="theme-btn" onclick="setEffect('leaves', event)">🍂 Листья</button>
-                        <button class="theme-btn" onclick="setEffect('smoke', event)">💨 Дым / Тень</button>
-                        <button class="theme-btn" onclick="setEffect('sparks', event)">🎆 Искры</button>
-                        <button class="theme-btn" onclick="setEffect('storm', event)">⚡ Гроза</button>
-                    </div>
-                </div>
+                <h3 style="margin-bottom: 16px; color: var(--primary-orange);"><i class="fa-solid fa-crown"></i> Панель Создателя</h3>
+                <p style="color: var(--text-muted); font-size: 13px; line-height: 1.5;">Настройки загружаются из файла <code>config.json</code> на GitHub. Чтобы применить их для всех пользователей интернетa — просто редактируйте <code>config.json</code> в вашем репозитории.</p>
             </div>
         </div>
     </div>
 
     <script>
-        // Background Particle System
+        // 1. АНИМАЦИЯ СКАЧИВАНИЯ
+        let currentApkLink = 'velluma.apk';
+
+        function triggerAnimatedDownload(e) {
+            e.preventDefault();
+            const overlay = document.getElementById('downloadOverlay');
+            const progress = document.getElementById('dlProgress');
+            const percent = document.getElementById('dlPercent');
+            const statusTitle = document.getElementById('dlStatusTitle');
+            const statusText = document.getElementById('dlStatusText');
+            const dlIcon = document.getElementById('dlIcon');
+
+            overlay.classList.add('active');
+            progress.style.width = '0%';
+            percent.textContent = '0%';
+            dlIcon.className = 'fa-solid fa-cloud-arrow-down';
+            dlIcon.style.color = 'var(--primary-orange)';
+            statusTitle.textContent = 'Подготовка файла...';
+            statusText.textContent = 'Установка соединения с сервером Velluma';
+
+            let curr = 0;
+            const timer = setInterval(() => {
+                curr += Math.floor(Math.random() * 15) + 5;
+                if (curr >= 100) {
+                    curr = 100;
+                    clearInterval(timer);
+                    progress.style.width = '100%';
+                    percent.textContent = '100%';
+                    statusTitle.textContent = 'Загрузка начата!';
+                    statusText.textContent = 'Файл сохранен на ваше устройство';
+                    dlIcon.className = 'fa-solid fa-circle-check';
+                    dlIcon.style.color = '#10B981';
+
+                    setTimeout(() => {
+                        const a = document.createElement('a');
+                        a.href = currentApkLink;
+                        a.download = 'velluma.apk';
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                        setTimeout(() => { overlay.classList.remove('active'); }, 1200);
+                    }, 500);
+                } else {
+                    progress.style.width = curr + '%';
+                    percent.textContent = curr + '%';
+                    if (curr > 40) statusText.textContent = 'Проверка безопасности и подписи APK...';
+                    if (curr > 75) statusText.textContent = 'Формирование пакета установки...';
+                }
+            }, 180);
+        }
+
+        // 2. ЧТЕНИЕ ГЛОБАЛЬНЫХ НАСТРОЕК ИЗ config.json
+        async function loadGlobalConfig() {
+            try {
+                const res = await fetch('config.json?v=' + Date.now());
+                if (res.ok) {
+                    const cfg = await res.json();
+                    
+                    if (cfg.version) {
+                        document.getElementById('appVersion').textContent = 'v' + cfg.version;
+                        document.getElementById('badgeVersion').textContent = 'v' + cfg.version;
+                    }
+                    if (cfg.isMaintenance === true) {
+                        document.getElementById('maintOverlay').classList.add('active');
+                    } else {
+                        document.getElementById('maintOverlay').classList.remove('active');
+                    }
+                    if (cfg.apkUrl) {
+                        currentApkLink = cfg.apkUrl;
+                    }
+                    if (cfg.effect) {
+                        renderEffect(cfg.effect);
+                    }
+                }
+            } catch (e) {
+                console.log('Конфиг пока не найден, создайте config.json на GitHub');
+            }
+        }
+        loadGlobalConfig();
+
+        // 3. ФОНОВЫЙ ХОЛСТ
         const bgCanvas = document.getElementById('bg-canvas');
         const bgCtx = bgCanvas.getContext('2d');
         let bgParticles = [];
 
         function resizeCanvases() {
-            bgCanvas.width = window.innerWidth;
-            bgCanvas.height = window.innerHeight;
-            effectCanvas.width = window.innerWidth;
-            effectCanvas.height = window.innerHeight;
+            bgCanvas.width = window.innerWidth; bgCanvas.height = window.innerHeight;
+            effectCanvas.width = window.innerWidth; effectCanvas.height = window.innerHeight;
         }
 
         class BgParticle {
@@ -666,13 +339,10 @@
                 if (this.y > bgCanvas.height) this.y = 0; if (this.y < 0) this.y = bgCanvas.height;
             }
             draw() {
-                bgCtx.fillStyle = this.color;
-                bgCtx.beginPath();
-                bgCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                bgCtx.fill();
+                bgCtx.fillStyle = this.color; bgCtx.beginPath();
+                bgCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2); bgCtx.fill();
             }
         }
-
         for (let i = 0; i < 50; i++) bgParticles.push(new BgParticle());
 
         function animateBg() {
@@ -682,10 +352,9 @@
         }
         animateBg();
 
-        // Ultra Realistic Weather Engine
+        // 4. ЭФФЕКТЫ ПОГОДЫ ПРЕМИУМ-КАЧЕСТВА
         const effectCanvas = document.getElementById('effect-canvas');
         const effCtx = effectCanvas.getContext('2d');
-        let activeEffect = 'none';
         let effectItems = [];
         let ripples = [];
         let stormTimer = null;
@@ -694,11 +363,8 @@
         window.addEventListener('resize', resizeCanvases);
         resizeCanvases();
 
-        class RealisticParticle {
-            constructor(type) {
-                this.type = type;
-                this.reset();
-            }
+        class ParticleItem {
+            constructor(type) { this.type = type; this.reset(); }
             reset() {
                 this.x = Math.random() * (effectCanvas.width + 200) - 100;
                 this.y = Math.random() * -effectCanvas.height;
@@ -718,8 +384,6 @@
                     this.size = Math.random() * 12 + 8;
                     this.speedY = Math.random() * 2 + 1.2;
                     this.speedX = Math.random() * 2 - 1;
-                    this.rotX = Math.random() * 360;
-                    this.rotY = Math.random() * 360;
                     this.rotZ = Math.random() * 360;
                     this.rotSpeed = Math.random() * 2 + 1;
                     const colors = ['#FF6B00', '#D9381E', '#E67E22', '#CC4E00'];
@@ -748,16 +412,13 @@
                 } else if (this.type === 'rain' || this.type === 'storm') {
                     this.y += this.speedY; this.x += this.speedX;
                     if (this.y > effectCanvas.height) {
-                        if (Math.random() > 0.6) {
-                            ripples.push({ x: this.x, y: effectCanvas.height - 10, r: 2, maxR: Math.random() * 12 + 6, o: 0.8 });
-                        }
+                        if (Math.random() > 0.6) ripples.push({ x: this.x, y: effectCanvas.height - 10, r: 2, o: 0.8 });
                         this.reset();
                     }
                 } else if (this.type === 'leaves') {
                     this.y += this.speedY;
                     this.x += Math.sin(this.y * 0.015) * 2 + this.speedX;
-                    this.rotX += this.rotSpeed;
-                    this.rotY += this.rotSpeed;
+                    this.rotZ += this.rotSpeed;
                     if (this.y > effectCanvas.height) this.reset();
                 } else if (this.type === 'smoke') {
                     this.x += this.speedX; this.y += this.speedY;
@@ -776,59 +437,36 @@
                     effCtx.translate(this.x, this.y);
                     for (let i = 0; i < 6; i++) {
                         effCtx.rotate(Math.PI / 3);
-                        effCtx.beginPath();
-                        effCtx.moveTo(0, 0);
-                        effCtx.lineTo(0, this.size);
-                        effCtx.stroke();
+                        effCtx.beginPath(); effCtx.moveTo(0, 0); effCtx.lineTo(0, this.size); effCtx.stroke();
                     }
                 } else if (this.type === 'rain' || this.type === 'storm') {
                     effCtx.strokeStyle = `rgba(170, 210, 255, ${this.opacity})`;
                     effCtx.lineWidth = 1.8;
-                    effCtx.beginPath();
-                    effCtx.moveTo(this.x, this.y);
-                    effCtx.lineTo(this.x + this.speedX, this.y + this.length);
-                    effCtx.stroke();
+                    effCtx.beginPath(); effCtx.moveTo(this.x, this.y); effCtx.lineTo(this.x + this.speedX, this.y + this.length); effCtx.stroke();
                 } else if (this.type === 'leaves') {
                     effCtx.translate(this.x, this.y);
                     effCtx.rotate((this.rotZ * Math.PI) / 180);
                     effCtx.fillStyle = this.color;
-                    
-                    // Detailed Leaf Shape
                     effCtx.beginPath();
                     effCtx.moveTo(0, -this.size);
                     effCtx.bezierCurveTo(this.size / 2, -this.size / 2, this.size, this.size / 3, 0, this.size);
                     effCtx.bezierCurveTo(-this.size, this.size / 3, -this.size / 2, -this.size / 2, 0, -this.size);
                     effCtx.fill();
-
-                    // Leaf Vein
-                    effCtx.strokeStyle = 'rgba(0,0,0,0.3)';
-                    effCtx.lineWidth = 1;
-                    effCtx.beginPath();
-                    effCtx.moveTo(0, -this.size);
-                    effCtx.lineTo(0, this.size);
-                    effCtx.stroke();
                 } else if (this.type === 'smoke') {
                     let grad = effCtx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.size);
                     grad.addColorStop(0, `rgba(255, 107, 0, ${this.opacity})`);
                     grad.addColorStop(0.5, `rgba(15, 18, 26, ${this.opacity * 1.8})`);
                     grad.addColorStop(1, 'rgba(0,0,0,0)');
-                    effCtx.fillStyle = grad;
-                    effCtx.beginPath();
-                    effCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                    effCtx.fill();
+                    effCtx.fillStyle = grad; effCtx.beginPath(); effCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2); effCtx.fill();
                 } else if (this.type === 'sparks') {
                     effCtx.fillStyle = `rgba(255, 136, 0, ${this.opacity})`;
-                    effCtx.shadowColor = '#FF6B00';
-                    effCtx.shadowBlur = 10;
-                    effCtx.beginPath();
-                    effCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                    effCtx.fill();
+                    effCtx.shadowColor = '#FF6B00'; effCtx.shadowBlur = 10;
+                    effCtx.beginPath(); effCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2); effCtx.fill();
                 }
                 effCtx.restore();
             }
         }
 
-        // Branching Chaotic Lightning
         function generateLightningBranch(x1, y1, x2, y2, depth) {
             if (depth <= 0) return;
             let midX = (x1 + x2) / 2 + (Math.random() * 80 - 40);
@@ -844,15 +482,9 @@
             }
         }
 
-        function setEffect(effect, evt) {
-            activeEffect = effect;
-            effectItems = [];
-            ripples = [];
-            lightningBolts = [];
+        function renderEffect(effect) {
+            effectItems = []; ripples = []; lightningBolts = [];
             clearInterval(stormTimer);
-
-            document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.remove('active'));
-            if (evt && evt.target) evt.target.classList.add('active');
 
             let count = 0;
             if (effect === 'snow') count = 75;
@@ -867,7 +499,6 @@
                         let startX = Math.random() * effectCanvas.width;
                         let endX = startX + (Math.random() * 400 - 200);
                         let endY = Math.random() * (effectCanvas.height * 0.8) + effectCanvas.height * 0.2;
-                        
                         generateLightningBranch(startX, 0, endX, endY, 4);
 
                         const lightning = document.getElementById('lightning');
@@ -878,44 +509,34 @@
             }
 
             for (let i = 0; i < count; i++) {
-                effectItems.push(new RealisticParticle(effect));
+                effectItems.push(new ParticleItem(effect));
             }
         }
 
         function animateEffects() {
             effCtx.clearRect(0, 0, effectCanvas.width, effectCanvas.height);
 
-            // Render Water Ripples
             for (let i = ripples.length - 1; i >= 0; i--) {
                 let r = ripples[i];
                 effCtx.strokeStyle = `rgba(170, 210, 255, ${r.o})`;
                 effCtx.lineWidth = 1;
-                effCtx.beginPath();
-                effCtx.ellipse(r.x, r.y, r.r, r.r / 3, 0, 0, Math.PI * 2);
-                effCtx.stroke();
-                r.r += 0.6;
-                r.o -= 0.02;
+                effCtx.beginPath(); effCtx.ellipse(r.x, r.y, r.r, r.r / 3, 0, 0, Math.PI * 2); effCtx.stroke();
+                r.r += 0.6; r.o -= 0.02;
                 if (r.o <= 0) ripples.splice(i, 1);
             }
 
-            // Render Weather Particles
             effectItems.forEach(item => { item.update(); item.draw(); });
 
-            // Render Lightning with Fading Out
             for (let i = lightningBolts.length - 1; i >= 0; i--) {
                 let b = lightningBolts[i];
                 effCtx.save();
                 effCtx.strokeStyle = `rgba(255, 255, 255, ${b.opacity})`;
                 effCtx.lineWidth = 2.5;
-                effCtx.shadowColor = '#FF6B00';
-                effCtx.shadowBlur = 12;
-                effCtx.beginPath();
-                effCtx.moveTo(b.x1, b.y1);
-                effCtx.lineTo(b.x2, b.y2);
-                effCtx.stroke();
+                effCtx.shadowColor = '#FF6B00'; effCtx.shadowBlur = 12;
+                effCtx.beginPath(); effCtx.moveTo(b.x1, b.y1); effCtx.lineTo(b.x2, b.y2); effCtx.stroke();
                 effCtx.restore();
 
-                b.opacity -= 0.04; // Затухание молнии
+                b.opacity -= 0.04;
                 if (b.opacity <= 0) lightningBolts.splice(i, 1);
             }
 
@@ -923,7 +544,7 @@
         }
         animateEffects();
 
-        // Chat Bot Demo
+        // 5. ДЕМО ЧАТ И ПАНЕЛЬ ВХОДА
         const chatInput = document.getElementById('chat-input');
         const sendBtn = document.getElementById('send-btn');
         const chatMessages = document.getElementById('chat-messages');
@@ -952,14 +573,7 @@
         sendBtn.addEventListener('click', sendMessage);
         chatInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendMessage(); });
 
-        // Admin Modal Controls
-        let isMaintenance = false;
-        let currentApkUrl = 'velluma.apk';
-
-        function toggleAdminModal() {
-            document.getElementById('adminModal').classList.toggle('active');
-        }
-
+        function toggleAdminModal() { document.getElementById('adminModal').classList.toggle('active'); }
         function checkPin() {
             const pin = document.getElementById('adminPin').value;
             if (pin === '29582422') {
@@ -968,50 +582,6 @@
             } else {
                 alert('Неверный PIN-код доступа!');
             }
-        }
-
-        function toggleMaintenance() {
-            isMaintenance = !isMaintenance;
-            const maintOverlay = document.getElementById('maintOverlay');
-            const toggleBtn = document.getElementById('maintToggleBtn');
-
-            if (isMaintenance) {
-                maintOverlay.classList.add('active');
-                toggleBtn.textContent = 'Выключить';
-                toggleBtn.style.background = '#10B981';
-            } else {
-                maintOverlay.classList.remove('active');
-                toggleBtn.textContent = 'Включить';
-                toggleBtn.style.background = 'linear-gradient(135deg, var(--primary-orange), var(--accent-orange))';
-            }
-        }
-
-        function updateVersion() {
-            const newVer = document.getElementById('versionInput').value.trim();
-            if (newVer) {
-                document.getElementById('appVersion').textContent = 'v' + newVer;
-                document.getElementById('badgeVersion').textContent = 'v' + newVer;
-                alert('Версия приложения изменена на v' + newVer);
-            }
-        }
-
-        function handleApkUpload(event) {
-            const file = event.target.files[0];
-            if (file) {
-                currentApkUrl = URL.createObjectURL(file);
-                document.getElementById('currentApkName').textContent = file.name;
-                alert('Новый APK файл успешно загружен! Кнопки скачивания обновлены.');
-            }
-        }
-
-        function downloadApk(e) {
-            e.preventDefault();
-            const a = document.createElement('a');
-            a.href = currentApkUrl;
-            a.download = document.getElementById('currentApkName').textContent || 'velluma.apk';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
         }
     </script>
 </body>
