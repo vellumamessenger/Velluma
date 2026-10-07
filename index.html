@@ -54,7 +54,7 @@
             pointer-events: none;
             z-index: 98;
             opacity: 0;
-            transition: opacity 0.04s ease-out;
+            transition: opacity 0.08s ease-out;
         }
 
         /* Ambient Glows */
@@ -142,9 +142,7 @@
             transition: 0.3s;
         }
 
-        .nav-links a:hover {
-            color: var(--primary-orange);
-        }
+        .nav-links a:hover { color: var(--primary-orange); }
 
         .btn {
             background: linear-gradient(135deg, var(--primary-orange), var(--accent-orange));
@@ -349,9 +347,7 @@
             padding: 24px;
         }
 
-        .maint-overlay.active {
-            display: flex;
-        }
+        .maint-overlay.active { display: flex; }
 
         .maint-box {
             max-width: 520px;
@@ -383,9 +379,7 @@
             transition: 0.3s;
         }
 
-        .admin-trigger:hover {
-            transform: scale(1.1) rotate(15deg);
-        }
+        .admin-trigger:hover { transform: scale(1.1) rotate(15deg); }
 
         /* Admin Modal */
         .admin-modal {
@@ -399,9 +393,7 @@
             justify-content: center;
         }
 
-        .admin-modal.active {
-            display: flex;
-        }
+        .admin-modal.active { display: flex; }
 
         .admin-box {
             background: #121620;
@@ -434,9 +426,7 @@
             outline: none;
         }
 
-        .admin-dashboard {
-            display: none;
-        }
+        .admin-dashboard { display: none; }
 
         .admin-control-item {
             background: rgba(255, 255, 255, 0.03);
@@ -603,7 +593,6 @@
             <div class="admin-dashboard" id="adminDashboard">
                 <h3 style="margin-bottom: 20px; color: var(--primary-orange);"><i class="fa-solid fa-crown"></i> Панель Создателя</h3>
                 
-                <!-- 1. Technical Break Toggle -->
                 <div class="admin-control-item">
                     <div style="display: flex; justify-content: space-between; align-items: center;">
                         <div>
@@ -614,7 +603,6 @@
                     </div>
                 </div>
 
-                <!-- 2. Version Control -->
                 <div class="admin-control-item">
                     <strong>Изменить версию приложения</strong>
                     <div style="display: flex; gap: 8px; margin-top: 8px;">
@@ -623,7 +611,6 @@
                     </div>
                 </div>
 
-                <!-- 3. Upload / Change APK File -->
                 <div class="admin-control-item">
                     <strong>Загрузить / Сменить APK файл</strong>
                     <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px; margin-bottom: 10px;">
@@ -635,7 +622,6 @@
                     </button>
                 </div>
 
-                <!-- 4. Real Weather & Visual Events -->
                 <div class="admin-control-item">
                     <strong>Атмосферные эффекты (Темы)</strong>
                     <div class="theme-buttons">
@@ -653,7 +639,7 @@
     </div>
 
     <script>
-        // Main Background Canvas
+        // Background Particle System
         const bgCanvas = document.getElementById('bg-canvas');
         const bgCtx = bgCanvas.getContext('2d');
         let bgParticles = [];
@@ -696,76 +682,86 @@
         }
         animateBg();
 
-        // High Quality Visual Effects Engine
+        // Ultra Realistic Weather Engine
         const effectCanvas = document.getElementById('effect-canvas');
         const effCtx = effectCanvas.getContext('2d');
         let activeEffect = 'none';
         let effectItems = [];
+        let ripples = [];
         let stormTimer = null;
-        let bolts = [];
+        let lightningBolts = [];
 
         window.addEventListener('resize', resizeCanvases);
         resizeCanvases();
 
-        class ParticleItem {
+        class RealisticParticle {
             constructor(type) {
                 this.type = type;
                 this.reset();
             }
             reset() {
-                this.x = Math.random() * effectCanvas.width;
-                if (this.type === 'sparks') {
-                    this.y = effectCanvas.height + Math.random() * 20;
-                } else {
-                    this.y = Math.random() * -effectCanvas.height;
-                }
+                this.x = Math.random() * (effectCanvas.width + 200) - 100;
+                this.y = Math.random() * -effectCanvas.height;
 
                 if (this.type === 'snow') {
-                    this.size = Math.random() * 3 + 2;
+                    this.size = Math.random() * 5 + 3;
                     this.speedY = Math.random() * 1.5 + 0.8;
-                    this.speedX = Math.random() * 0.6 - 0.3;
-                    this.swing = Math.random() * 0.05;
+                    this.speedX = Math.random() * 0.8 - 0.4;
+                    this.angle = Math.random() * Math.PI * 2;
                     this.opacity = Math.random() * 0.8 + 0.2;
                 } else if (this.type === 'rain' || this.type === 'storm') {
-                    this.length = Math.random() * 25 + 15;
-                    this.speedY = Math.random() * 12 + 14;
-                    this.speedX = -2;
-                    this.opacity = Math.random() * 0.5 + 0.2;
+                    this.length = Math.random() * 30 + 20;
+                    this.speedY = Math.random() * 15 + 15;
+                    this.speedX = -3;
+                    this.opacity = Math.random() * 0.5 + 0.3;
                 } else if (this.type === 'leaves') {
-                    this.size = Math.random() * 10 + 6;
-                    this.speedY = Math.random() * 2 + 1;
-                    this.speedX = Math.random() * 1.5 - 0.75;
-                    this.rotation = Math.random() * 360;
-                    this.rotSpeed = Math.random() * 3 - 1.5;
+                    this.size = Math.random() * 12 + 8;
+                    this.speedY = Math.random() * 2 + 1.2;
+                    this.speedX = Math.random() * 2 - 1;
+                    this.rotX = Math.random() * 360;
+                    this.rotY = Math.random() * 360;
+                    this.rotZ = Math.random() * 360;
+                    this.rotSpeed = Math.random() * 2 + 1;
+                    const colors = ['#FF6B00', '#D9381E', '#E67E22', '#CC4E00'];
+                    this.color = colors[Math.floor(Math.random() * colors.length)];
                 } else if (this.type === 'smoke') {
                     this.x = Math.random() * effectCanvas.width;
                     this.y = Math.random() * effectCanvas.height;
-                    this.size = Math.random() * 150 + 100;
-                    this.speedX = Math.random() * 0.4 - 0.2;
+                    this.size = Math.random() * 180 + 120;
+                    this.speedX = Math.random() * 0.5 - 0.25;
                     this.speedY = -Math.random() * 0.3;
                     this.opacity = Math.random() * 0.12 + 0.03;
                 } else if (this.type === 'sparks') {
+                    this.y = effectCanvas.height + Math.random() * 20;
                     this.size = Math.random() * 4 + 1.5;
-                    this.speedY = -(Math.random() * 3 + 1);
-                    this.speedX = Math.random() * 2 - 1;
+                    this.speedY = -(Math.random() * 3 + 1.5);
+                    this.speedX = Math.random() * 3 - 1.5;
                     this.opacity = 1;
                 }
             }
             update() {
                 if (this.type === 'snow') {
-                    this.speedX += Math.sin(this.y * 0.01) * this.swing;
-                    this.y += this.speedY; this.x += this.speedX;
+                    this.angle += 0.02;
+                    this.x += Math.sin(this.angle) * 0.8 + this.speedX;
+                    this.y += this.speedY;
                     if (this.y > effectCanvas.height) this.reset();
                 } else if (this.type === 'rain' || this.type === 'storm') {
                     this.y += this.speedY; this.x += this.speedX;
-                    if (this.y > effectCanvas.height) this.reset();
+                    if (this.y > effectCanvas.height) {
+                        if (Math.random() > 0.6) {
+                            ripples.push({ x: this.x, y: effectCanvas.height - 10, r: 2, maxR: Math.random() * 12 + 6, o: 0.8 });
+                        }
+                        this.reset();
+                    }
                 } else if (this.type === 'leaves') {
-                    this.y += this.speedY; this.x += Math.sin(this.y * 0.02) * 1.5;
-                    this.rotation += this.rotSpeed;
+                    this.y += this.speedY;
+                    this.x += Math.sin(this.y * 0.015) * 2 + this.speedX;
+                    this.rotX += this.rotSpeed;
+                    this.rotY += this.rotSpeed;
                     if (this.y > effectCanvas.height) this.reset();
                 } else if (this.type === 'smoke') {
                     this.x += this.speedX; this.y += this.speedY;
-                    if (this.y < -150) this.y = effectCanvas.height + 150;
+                    if (this.y < -200) this.y = effectCanvas.height + 200;
                 } else if (this.type === 'sparks') {
                     this.y += this.speedY; this.x += this.speedX;
                     this.opacity -= 0.008;
@@ -775,28 +771,46 @@
             draw() {
                 effCtx.save();
                 if (this.type === 'snow') {
-                    effCtx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
-                    effCtx.beginPath();
-                    effCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                    effCtx.fill();
-                } else if (this.type === 'rain' || this.type === 'storm') {
-                    effCtx.strokeStyle = `rgba(160, 200, 255, ${this.opacity})`;
+                    effCtx.strokeStyle = `rgba(255, 255, 255, ${this.opacity})`;
                     effCtx.lineWidth = 1.5;
+                    effCtx.translate(this.x, this.y);
+                    for (let i = 0; i < 6; i++) {
+                        effCtx.rotate(Math.PI / 3);
+                        effCtx.beginPath();
+                        effCtx.moveTo(0, 0);
+                        effCtx.lineTo(0, this.size);
+                        effCtx.stroke();
+                    }
+                } else if (this.type === 'rain' || this.type === 'storm') {
+                    effCtx.strokeStyle = `rgba(170, 210, 255, ${this.opacity})`;
+                    effCtx.lineWidth = 1.8;
                     effCtx.beginPath();
                     effCtx.moveTo(this.x, this.y);
                     effCtx.lineTo(this.x + this.speedX, this.y + this.length);
                     effCtx.stroke();
                 } else if (this.type === 'leaves') {
                     effCtx.translate(this.x, this.y);
-                    effCtx.rotate((this.rotation * Math.PI) / 180);
-                    effCtx.fillStyle = '#FF6B00';
+                    effCtx.rotate((this.rotZ * Math.PI) / 180);
+                    effCtx.fillStyle = this.color;
+                    
+                    // Detailed Leaf Shape
                     effCtx.beginPath();
-                    effCtx.ellipse(0, 0, this.size, this.size / 2.2, 0, 0, Math.PI * 2);
+                    effCtx.moveTo(0, -this.size);
+                    effCtx.bezierCurveTo(this.size / 2, -this.size / 2, this.size, this.size / 3, 0, this.size);
+                    effCtx.bezierCurveTo(-this.size, this.size / 3, -this.size / 2, -this.size / 2, 0, -this.size);
                     effCtx.fill();
+
+                    // Leaf Vein
+                    effCtx.strokeStyle = 'rgba(0,0,0,0.3)';
+                    effCtx.lineWidth = 1;
+                    effCtx.beginPath();
+                    effCtx.moveTo(0, -this.size);
+                    effCtx.lineTo(0, this.size);
+                    effCtx.stroke();
                 } else if (this.type === 'smoke') {
                     let grad = effCtx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.size);
                     grad.addColorStop(0, `rgba(255, 107, 0, ${this.opacity})`);
-                    grad.addColorStop(0.5, `rgba(20, 20, 30, ${this.opacity * 1.5})`);
+                    grad.addColorStop(0.5, `rgba(15, 18, 26, ${this.opacity * 1.8})`);
                     grad.addColorStop(1, 'rgba(0,0,0,0)');
                     effCtx.fillStyle = grad;
                     effCtx.beginPath();
@@ -805,7 +819,7 @@
                 } else if (this.type === 'sparks') {
                     effCtx.fillStyle = `rgba(255, 136, 0, ${this.opacity})`;
                     effCtx.shadowColor = '#FF6B00';
-                    effCtx.shadowBlur = 8;
+                    effCtx.shadowBlur = 10;
                     effCtx.beginPath();
                     effCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
                     effCtx.fill();
@@ -814,75 +828,95 @@
             }
         }
 
-        // Realistic Lightning Constructor
-        function createLightningBolt() {
-            let startX = Math.random() * effectCanvas.width;
-            let startY = 0;
-            let segments = [];
-            let currX = startX;
-            let currY = startY;
+        // Branching Chaotic Lightning
+        function generateLightningBranch(x1, y1, x2, y2, depth) {
+            if (depth <= 0) return;
+            let midX = (x1 + x2) / 2 + (Math.random() * 80 - 40);
+            let midY = (y1 + y2) / 2 + (Math.random() * 40 - 20);
 
-            while (currY < effectCanvas.height * 0.7) {
-                let nextX = currX + (Math.random() * 60 - 30);
-                let nextY = currY + (Math.random() * 40 + 20);
-                segments.push({ x1: currX, y1: currY, x2: nextX, y2: nextY });
-                currX = nextX;
-                currY = nextY;
+            lightningBolts.push({ x1, y1, x2: midX, y2: midY, opacity: 1 });
+            lightningBolts.push({ x1: midX, y1: midY, x2, y2, opacity: 1 });
+
+            if (Math.random() > 0.4) {
+                let branchX = midX + (Math.random() * 120 - 60);
+                let branchY = midY + (Math.random() * 100 + 30);
+                generateLightningBranch(midX, midY, branchX, branchY, depth - 1);
             }
-            return segments;
         }
 
         function setEffect(effect, evt) {
             activeEffect = effect;
             effectItems = [];
-            bolts = [];
+            ripples = [];
+            lightningBolts = [];
             clearInterval(stormTimer);
 
             document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.remove('active'));
             if (evt && evt.target) evt.target.classList.add('active');
 
             let count = 0;
-            if (effect === 'snow') count = 80;
+            if (effect === 'snow') count = 75;
             else if (effect === 'rain') count = 110;
-            else if (effect === 'leaves') count = 40;
-            else if (effect === 'smoke') count = 20;
+            else if (effect === 'leaves') count = 45;
+            else if (effect === 'smoke') count = 22;
             else if (effect === 'sparks') count = 70;
             else if (effect === 'storm') {
                 count = 130;
                 stormTimer = setInterval(() => {
-                    if (Math.random() > 0.5) {
-                        bolts = createLightningBolt();
+                    if (Math.random() > 0.4) {
+                        let startX = Math.random() * effectCanvas.width;
+                        let endX = startX + (Math.random() * 400 - 200);
+                        let endY = Math.random() * (effectCanvas.height * 0.8) + effectCanvas.height * 0.2;
+                        
+                        generateLightningBranch(startX, 0, endX, endY, 4);
+
                         const lightning = document.getElementById('lightning');
                         lightning.style.opacity = '1';
-                        setTimeout(() => { lightning.style.opacity = '0'; }, 60);
-                        setTimeout(() => { bolts = []; }, 150);
+                        setTimeout(() => { lightning.style.opacity = '0'; }, 100);
                     }
-                }, 2500);
+                }, 2200);
             }
 
             for (let i = 0; i < count; i++) {
-                effectItems.push(new ParticleItem(effect));
+                effectItems.push(new RealisticParticle(effect));
             }
         }
 
         function animateEffects() {
             effCtx.clearRect(0, 0, effectCanvas.width, effectCanvas.height);
+
+            // Render Water Ripples
+            for (let i = ripples.length - 1; i >= 0; i--) {
+                let r = ripples[i];
+                effCtx.strokeStyle = `rgba(170, 210, 255, ${r.o})`;
+                effCtx.lineWidth = 1;
+                effCtx.beginPath();
+                effCtx.ellipse(r.x, r.y, r.r, r.r / 3, 0, 0, Math.PI * 2);
+                effCtx.stroke();
+                r.r += 0.6;
+                r.o -= 0.02;
+                if (r.o <= 0) ripples.splice(i, 1);
+            }
+
+            // Render Weather Particles
             effectItems.forEach(item => { item.update(); item.draw(); });
 
-            // Draw Lightning Bolts if Storm Active
-            if (bolts.length > 0) {
+            // Render Lightning with Fading Out
+            for (let i = lightningBolts.length - 1; i >= 0; i--) {
+                let b = lightningBolts[i];
                 effCtx.save();
-                effCtx.strokeStyle = '#FFFFFF';
-                effCtx.lineWidth = 3;
-                effCtx.shadowColor = '#FF8800';
-                effCtx.shadowBlur = 15;
+                effCtx.strokeStyle = `rgba(255, 255, 255, ${b.opacity})`;
+                effCtx.lineWidth = 2.5;
+                effCtx.shadowColor = '#FF6B00';
+                effCtx.shadowBlur = 12;
                 effCtx.beginPath();
-                bolts.forEach(b => {
-                    effCtx.moveTo(b.x1, b.y1);
-                    effCtx.lineTo(b.x2, b.y2);
-                });
+                effCtx.moveTo(b.x1, b.y1);
+                effCtx.lineTo(b.x2, b.y2);
                 effCtx.stroke();
                 effCtx.restore();
+
+                b.opacity -= 0.04; // Затухание молнии
+                if (b.opacity <= 0) lightningBolts.splice(i, 1);
             }
 
             requestAnimationFrame(animateEffects);
@@ -918,13 +952,12 @@
         sendBtn.addEventListener('click', sendMessage);
         chatInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendMessage(); });
 
-        // Admin Modal & Maintenance Controls
+        // Admin Modal Controls
         let isMaintenance = false;
-        let currentApkUrl = 'velluma.apk'; // Исходный файл по умолчанию
+        let currentApkUrl = 'velluma.apk';
 
         function toggleAdminModal() {
-            const modal = document.getElementById('adminModal');
-            modal.classList.toggle('active');
+            document.getElementById('adminModal').classList.toggle('active');
         }
 
         function checkPin() {
@@ -962,17 +995,15 @@
             }
         }
 
-        // Handle Uploading New APK File
         function handleApkUpload(event) {
             const file = event.target.files[0];
             if (file) {
                 currentApkUrl = URL.createObjectURL(file);
                 document.getElementById('currentApkName').textContent = file.name;
-                alert('Новый APK файл успешно загружен! Теперь кнопка "Скачать" будет выдавать этот файл.');
+                alert('Новый APK файл успешно загружен! Кнопки скачивания обновлены.');
             }
         }
 
-        // Trigger Download
         function downloadApk(e) {
             e.preventDefault();
             const a = document.createElement('a');
