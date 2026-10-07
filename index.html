@@ -1,438 +1,745 @@
 <!DOCTYPE html>
-<html lang="ru" class="scroll-smooth">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Velluma — Быстрый и безопасный мессенджер</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                    },
-                    colors: {
-                        brand: {
-                            50: '#fff7ed',
-                            100: '#ffedd5',
-                            400: '#fb923c',
-                            500: '#ff6b00',
-                            600: '#ea580c',
-                            700: '#c2410c',
-                        },
-                        dark: {
-                            900: '#0b0d12',
-                            800: '#121620',
-                            700: '#1a202c',
-                            600: '#2d3748',
-                        }
-                    },
-                    boxShadow: {
-                        'glow': '0 0 25px -5px rgba(255, 107, 0, 0.4)',
-                        'glow-lg': '0 0 50px -10px rgba(255, 107, 0, 0.3)',
-                    }
-                }
-            }
-        }
-    </script>
+    <title>Velluma — Мессенджер нового поколения</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        .glass-card {
-            background: rgba(18, 22, 32, 0.7);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+        :root {
+            --bg-color: #08090C;
+            --card-bg: rgba(22, 26, 36, 0.65);
+            --card-border: rgba(255, 107, 0, 0.2);
+            --primary-orange: #FF6B00;
+            --primary-orange-glow: rgba(255, 107, 0, 0.4);
+            --accent-orange: #FF8800;
+            --text-main: #FFFFFF;
+            --text-muted: #94A3B8;
+            --glass-blur: blur(16px);
         }
-        .glass-nav {
-            background: rgba(11, 13, 18, 0.8);
-            backdrop-filter: blur(12px);
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Interactive Canvas Background */
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* Ambient Glows */
+        .ambient-glow {
+            position: fixed;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(255,107,0,0.15) 0%, rgba(0,0,0,0) 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: -1;
+            animation: pulse-glow 8s infinite alternate ease-in-out;
+        }
+        .glow-1 { top: -200px; left: -200px; }
+        .glow-2 { bottom: -200px; right: -200px; background: radial-gradient(circle, rgba(255,136,0,0.12) 0%, rgba(0,0,0,0) 70%); }
+
+        @keyframes pulse-glow {
+            0% { transform: scale(1) translate(0, 0); opacity: 0.6; }
+            100% { transform: scale(1.2) translate(40px, 30px); opacity: 1; }
+        }
+
+        /* Header & Navigation */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            backdrop-filter: var(--glass-blur);
+            background: rgba(8, 9, 12, 0.7);
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
         }
-        .orange-gradient-text {
-            background: linear-gradient(135deg, #FF8800 0%, #FF3D00 100%);
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            font-weight: 800;
+            font-size: 24px;
+            color: var(--text-main);
+            letter-spacing: -0.5px;
+        }
+
+        .logo-icon {
+            width: 42px;
+            height: 42px;
+            background: linear-gradient(135deg, var(--primary-orange), var(--accent-orange));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            box-shadow: 0 0 20px var(--primary-orange-glow);
+            animation: float-logo 4s ease-in-out infinite alternate;
+        }
+
+        @keyframes float-logo {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-5px); }
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 500;
+            transition: 0.3s;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-orange);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary-orange);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, var(--primary-orange), var(--accent-orange));
+            color: #fff;
+            padding: 12px 28px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 20px var(--primary-orange-glow);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 8px 30px var(--primary-orange-glow);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 180px 24px 100px;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 107, 0, 0.1);
+            border: 1px solid rgba(255, 107, 0, 0.3);
+            padding: 8px 16px;
+            border-radius: 30px;
+            color: var(--primary-orange);
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 24px;
+            animation: pulse-badge 2s infinite;
+        }
+
+        @keyframes pulse-badge {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(255, 107, 0, 0.4); }
+            50% { box-shadow: 0 0 0 10px rgba(255, 107, 0, 0); }
+        }
+
+        .hero-title {
+            font-size: 58px;
+            line-height: 1.1;
+            font-weight: 800;
+            margin-bottom: 24px;
+            letter-spacing: -1px;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #FFF 0%, var(--primary-orange) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-        .orange-gradient-btn {
-            background: linear-gradient(135deg, #FF8800 0%, #FF5500 100%);
+
+        .hero-desc {
+            font-size: 18px;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 40px;
         }
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 5px;
+
+        .hero-buttons {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
         }
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: transparent;
+
+        /* Interactive Phone Demo */
+        .phone-wrapper {
+            position: relative;
+            perspective: 1000px;
         }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
+
+        .phone-card {
+            background: var(--card-bg);
+            backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--card-border);
+            border-radius: 32px;
+            padding: 24px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            transform-style: preserve-3d;
+            transition: transform 0.1s ease-out;
+        }
+
+        .chat-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .chat-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: #252B3B;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: var(--primary-orange);
+            position: relative;
+        }
+
+        .online-dot {
+            position: absolute;
+            bottom: 2px;
+            right: 2px;
+            width: 10px;
+            height: 10px;
+            background: #10B981;
+            border: 2px solid #161A24;
+            border-radius: 50%;
+        }
+
+        .chat-body {
+            height: 300px;
+            padding: 16px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            overflow-y: auto;
+        }
+
+        .message {
+            max-width: 80%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            font-size: 14px;
+            line-height: 1.4;
+            animation: pop-msg 0.3s ease-out;
+        }
+
+        @keyframes pop-msg {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .msg-in {
+            background: rgba(255, 255, 255, 0.05);
+            align-self: flex-start;
+            border-bottom-left-radius: 4px;
+        }
+
+        .msg-out {
+            background: linear-gradient(135deg, var(--primary-orange), var(--accent-orange));
+            color: #fff;
+            align-self: flex-end;
+            border-bottom-right-radius: 4px;
+        }
+
+        .chat-input-box {
+            display: flex;
+            gap: 8px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .chat-input-box input {
+            flex: 1;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 12px 16px;
+            border-radius: 12px;
+            color: #fff;
+            outline: none;
+        }
+
+        .chat-input-box input:focus {
+            border-color: var(--primary-orange);
+        }
+
+        /* Features Section */
+        .features {
+            max-width: 1200px;
+            margin: 100px auto;
+            padding: 0 24px;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-title {
+            font-size: 40px;
+            font-weight: 800;
+            margin-bottom: 16px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+        }
+
+        .feature-card {
+            background: var(--card-bg);
+            backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--card-border);
+            padding: 32px;
+            border-radius: 24px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary-orange);
+            box-shadow: 0 15px 35px rgba(255, 107, 0, 0.15);
+        }
+
+        .feature-icon {
+            width: 56px;
+            height: 56px;
+            background: rgba(255, 107, 0, 0.1);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: var(--primary-orange);
+            margin-bottom: 20px;
+        }
+
+        .feature-card h3 {
+            font-size: 20px;
+            margin-bottom: 12px;
+        }
+
+        .feature-card p {
+            color: var(--text-muted);
+            line-height: 1.5;
+            font-size: 15px;
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 40px 24px;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        /* Creator Panel Floating Trigger */
+        .admin-trigger {
+            position: fixed;
+            bottom: 24px;
+            left: 24px;
+            width: 48px;
+            height: 48px;
+            background: rgba(22, 26, 36, 0.8);
+            border: 1px solid var(--primary-orange);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-orange);
+            cursor: pointer;
+            z-index: 2000;
+            backdrop-filter: var(--glass-blur);
+            box-shadow: 0 0 15px var(--primary-orange-glow);
+            transition: 0.3s;
+        }
+
+        .admin-trigger:hover {
+            transform: scale(1.1) rotate(15deg);
+        }
+
+        /* Admin Modal */
+        .admin-modal {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            z-index: 3000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .admin-modal.active {
+            display: flex;
+        }
+
+        .admin-box {
+            background: #121620;
+            border: 1px solid var(--primary-orange);
+            border-radius: 24px;
+            width: 90%;
+            max-width: 500px;
+            padding: 32px;
+            box-shadow: 0 0 40px var(--primary-orange-glow);
+            position: relative;
+        }
+
+        .admin-close {
+            position: absolute;
+            top: 20px; right: 20px;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 20px;
+        }
+
+        .admin-pin-screen {
+            text-align: center;
+        }
+
+        .admin-pin-screen input {
+            width: 100%;
+            padding: 14px;
+            margin: 20px 0;
+            background: rgba(0,0,0,0.4);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            color: #fff;
+            font-size: 18px;
+            text-align: center;
+            letter-spacing: 4px;
+        }
+
+        .admin-dashboard {
+            display: none;
+        }
+
+        @media (max-width: 968px) {
+            .hero {
+                grid-template-columns: 1fr;
+                text-align: center;
+                padding-top: 140px;
+            }
+            .hero-title { font-size: 42px; }
+            .hero-buttons { justify-content: center; }
+            .nav-links { display: none; }
         }
     </style>
 </head>
-<body class="bg-dark-900 text-gray-100 font-sans antialiased selection:bg-brand-500 selection:text-white min-h-screen flex flex-col justify-between overflow-x-hidden">
+<body>
 
-    <header class="fixed top-0 left-0 right-0 z-50 glass-nav transition-all duration-300">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-            <!-- Logo -->
-            <div class="flex items-center space-x-3 cursor-pointer">
-                <div class="w-10 h-10 rounded-xl orange-gradient-btn flex items-center justify-center shadow-glow">
-                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                    </svg>
-                </div>
-                <span class="text-2xl font-bold tracking-tight text-white">Velluma</span>
-            </div>
+    <canvas id="bg-canvas"></canvas>
+    <div class="ambient-glow glow-1"></div>
+    <div class="ambient-glow glow-2"></div>
 
-            <!-- Desktop Nav Links -->
-            <nav class="hidden md:flex items-center space-x-8 text-sm font-medium text-gray-300">
-                <a href="#features" class="hover:text-brand-500 transition-colors">Возможности</a>
-                <a href="#security" class="hover:text-brand-500 transition-colors">Безопасность</a>
-                <a href="#download" class="hover:text-brand-500 transition-colors">Скачать</a>
-                <a href="#network" class="hover:text-brand-500 transition-colors">Статус сети</a>
-            </nav>
-
-            <!-- CTA Button -->
-            <div class="hidden sm:flex items-center space-x-4">
-                <button onclick="scrollToDemo()" class="orange-gradient-btn hover:opacity-90 text-white font-medium px-5 py-2.5 rounded-xl transition-all shadow-glow hover:scale-[1.02] active:scale-95 text-sm">
-                    Открыть Web App
-                </button>
-            </div>
-
-            <!-- Mobile Menu Toggle Button -->
-            <button id="mobile-menu-btn" class="md:hidden text-gray-400 hover:text-white focus:outline-none">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-                </svg>
-            </button>
-        </div>
-
-        <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden glass-card border-b border-gray-800 px-4 pt-2 pb-6 space-y-3">
-            <a href="#features" class="block text-gray-300 hover:text-brand-500 font-medium py-2">Возможности</a>
-            <a href="#security" class="block text-gray-300 hover:text-brand-500 font-medium py-2">Безопасность</a>
-            <a href="#download" class="block text-gray-300 hover:text-brand-500 font-medium py-2">Скачать</a>
-            <a href="#network" class="block text-gray-300 hover:text-brand-500 font-medium py-2">Статус сети</a>
-            <button onclick="scrollToDemo()" class="w-full orange-gradient-btn text-white font-medium py-3 rounded-xl shadow-glow">
-                Открыть Web App
-            </button>
-        </div>
+    <!-- Header -->
+    <header>
+        <nav>
+            <a href="#" class="logo">
+                <div class="logo-icon"><i class="fa-solid fa-paper-plane"></i></div>
+                Velluma
+            </a>
+            <ul class="nav-links">
+                <li><a href="#features">Возможности</a></li>
+                <li><a href="#chat">Демо</a></li>
+                <li><a href="#download">Скачать</a></li>
+            </ul>
+            <a href="#download" class="btn"><i class="fa-solid fa-download"></i> Установить</a>
+        </nav>
     </header>
 
-    <section class="relative pt-32 pb-20 lg:pt-40 lg:pb-32 overflow-hidden">
-        <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-brand-500/15 rounded-full blur-[120px] pointer-events-none"></div>
-        <div class="absolute top-1/3 right-10 w-[300px] h-[300px] bg-orange-600/10 rounded-full blur-[100px] pointer-events-none"></div>
-
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div class="text-center max-w-3xl mx-auto mb-16">
-                <!-- Badge -->
-                <div class="inline-flex items-center space-x-2 glass-card px-4 py-2 rounded-full mb-6 border border-brand-500/30">
-                    <span class="w-2 h-2 rounded-full bg-brand-500 animate-pulse"></span>
-                    <span class="text-xs font-semibold text-gray-300 uppercase tracking-wider">Новое поколение общения</span>
-                </div>
-                
-                <!-- Main Title -->
-                <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight text-white mb-6 leading-tight">
-                    Быстрый, безопасный и <br/>
-                    <span class="orange-gradient-text">современный мессенджер</span>
-                </h1>
-                
-                <!-- Subtitle -->
-                <p class="text-lg sm:text-xl text-gray-400 mb-8 leading-relaxed">
-                    Общайтесь с близкими и коллегами на молниеносной скорости. Velluma объединяет в себе минималистичный дизайн, сквозное шифрование и высокую надёжность.
-                </p>
-
-                <!-- Action Buttons -->
-                <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-                    <a href="#download" class="w-full sm:w-auto orange-gradient-btn hover:opacity-95 text-white font-semibold px-8 py-4 rounded-xl transition-all shadow-glow-lg flex items-center justify-center space-x-2 hover:scale-[1.02] active:scale-95">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
-                        </svg>
-                        <span>Скачать приложение</span>
-                    </a>
-                    <button onclick="scrollToDemo()" class="w-full sm:w-auto glass-card hover:bg-white/5 text-gray-200 font-semibold px-8 py-4 rounded-xl border border-gray-700 transition-all flex items-center justify-center space-x-2">
-                        <span>Попробовать в браузере</span>
-                    </button>
-                </div>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-badge">
+                <i class="fa-solid fa-bolt"></i> Velluma v2.0 Доступна
             </div>
+            <h1 class="hero-title">Общение без <span class="gradient-text">границ и рамок</span></h1>
+            <p class="hero-desc">Скоростной, защищенный и современный мессенджер нового поколения. Безопасность ваших переписок — наш главный приоритет.</p>
+            <div class="hero-buttons">
+                <a href="#download" class="btn"><i class="fa-solid fa-download"></i> Скачать бесплатно</a>
+                <a href="#chat" class="btn" style="background: rgba(255,255,255,0.05); box-shadow: none; border: 1px solid rgba(255,255,255,0.1);"><i class="fa-solid fa-comments"></i> Попробовать демо</a>
+            </div>
+        </div>
 
-            <div id="demo-chat" class="max-w-4xl mx-auto">
-                <div class="glass-card rounded-2xl shadow-2xl overflow-hidden border border-gray-800">
-                    <!-- Chat Header -->
-                    <div class="bg-dark-800/90 px-6 py-4 border-b border-gray-800 flex items-center justify-between">
-                        <div class="flex items-center space-x-3">
-                            <div class="relative">
-                                <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-brand-500 to-amber-400 flex items-center justify-center text-white font-bold">
-                                    V
-                                </div>
-                                <div class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-dark-800"></div>
-                            </div>
-                            <div>
-                                <h3 class="text-sm font-semibold text-white">Разработчик Velluma</h3>
-                                <p class="text-xs text-brand-400">онлайн • Высокая скорость</p>
-                            </div>
-                        </div>
-                        <div class="flex items-center space-x-3 text-gray-400">
-                            <span class="text-xs bg-brand-500/10 text-brand-400 px-2.5 py-1 rounded-full border border-brand-500/20 font-mono">v1.0.4-live</span>
-                        </div>
+        <!-- Interactive Phone Demo -->
+        <div class="phone-wrapper" id="chat">
+            <div class="phone-card" id="tilt-card">
+                <div class="chat-header">
+                    <div class="chat-avatar">
+                        V
+                        <div class="online-dot"></div>
                     </div>
-
-                    <!-- Chat Body / Messages -->
-                    <div id="chat-messages" class="p-6 h-80 overflow-y-auto space-y-4 custom-scrollbar bg-dark-900/50">
-                        <div class="flex items-start space-x-3">
-                            <div class="w-8 h-8 rounded-full bg-brand-600 flex-shrink-0 flex items-center justify-center text-xs font-bold text-white">
-                                V
-                            </div>
-                            <div class="bg-dark-800 text-gray-200 rounded-2xl rounded-tl-none p-3.5 max-w-xs sm:max-w-md text-sm border border-gray-800">
-                                Привет! Добро пожаловать в предпросмотр Velluma 🚀 Попробуй отправить мне сообщение ниже!
-                                <span class="block text-[10px] text-gray-500 mt-1 text-right">12:00</span>
-                            </div>
-                        </div>
-
-                        <div class="flex items-start justify-end space-x-3">
-                            <div class="orange-gradient-btn text-white rounded-2xl rounded-tr-none p-3.5 max-w-xs sm:max-w-md text-sm shadow-md">
-                                Вау, выглядит очень стильно! Оранжевый цвет отлично смотрится.
-                                <span class="block text-[10px] text-orange-200 mt-1 text-right">12:01 ✓✓</span>
-                            </div>
-                        </div>
-
-                        <div class="flex items-start space-x-3">
-                            <div class="w-8 h-8 rounded-full bg-brand-600 flex-shrink-0 flex items-center justify-center text-xs font-bold text-white">
-                                V
-                            </div>
-                            <div class="bg-dark-800 text-gray-200 rounded-2xl rounded-tl-none p-3.5 max-w-xs sm:max-w-md text-sm border border-gray-800">
-                                Спасибо! Мы используем собственную быструю инфраструктуру, поэтому всё работает за доли секунды 🔥
-                                <span class="block text-[10px] text-gray-500 mt-1 text-right">12:01</span>
-                            </div>
-                        </div>
+                    <div>
+                        <div style="font-weight: 700; font-size: 15px;">Velluma Bot</div>
+                        <div style="font-size: 12px; color: #10B981;">В сети</div>
                     </div>
-
-                    <!-- Chat Input -->
-                    <div class="bg-dark-800/80 p-4 border-t border-gray-800">
-                        <form id="chat-form" class="flex items-center space-x-3">
-                            <input type="text" id="chat-input" placeholder="Напишите тестовое сообщение..." class="flex-grow bg-dark-900 text-white placeholder-gray-500 text-sm rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-500 border border-gray-800">
-                            <button type="submit" class="orange-gradient-btn text-white p-3 rounded-xl hover:opacity-90 transition-all flex-shrink-0">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-                                </svg>
-                            </button>
-                        </form>
-                    </div>
+                </div>
+                <div class="chat-body" id="chat-messages">
+                    <div class="message msg-in">Привет! Добро пожаловать в Velluma 👋</div>
+                    <div class="message msg-in">Напиши что-нибудь в поле ниже, чтобы протестировать чат!</div>
+                </div>
+                <div class="chat-input-box">
+                    <input type="text" id="chat-input" placeholder="Введите сообщение...">
+                    <button class="btn" id="send-btn" style="padding: 12px 16px;"><i class="fa-solid fa-paper-plane"></i></button>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="features" class="py-20 relative">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center max-w-2xl mx-auto mb-16">
-                <h2 class="text-3xl font-bold text-white mb-4">Почему выбирают Velluma?</h2>
-                <p class="text-gray-400">Мы создали мессенджер, который фокусируется на удобстве, скорости и вашей приватности.</p>
+    <!-- Features -->
+    <section class="features" id="features">
+        <div class="section-header">
+            <h2 class="section-title">Почему выбирают <span class="gradient-text">Velluma</span></h2>
+            <p style="color: var(--text-muted);">Всё, что вам нужно для комфортного и безопасного общения</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                <h3>Шифрование</h3>
+                <p>Все ваши сообщения и звонки надежно защищены сквозным шифрованием.</p>
             </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <!-- Feature 1 -->
-                <div class="glass-card p-6 rounded-2xl hover:border-brand-500/50 transition-all group">
-                    <div class="w-12 h-12 rounded-xl bg-brand-500/10 text-brand-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
-                        </svg>
-                    </div>
-                    <h3 class="text-lg font-semibold text-white mb-2">Мгновенная скорость</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed">Сообщения доставляются за миллисекунды благодаря оптимизированным веб-сокетам.</p>
-                </div>
-
-                <!-- Feature 2 -->
-                <div id="security" class="glass-card p-6 rounded-2xl hover:border-brand-500/50 transition-all group">
-                    <div class="w-12 h-12 rounded-xl bg-brand-500/10 text-brand-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
-                        </svg>
-                    </div>
-                    <h3 class="text-lg font-semibold text-white mb-2">Приватность и сквозная защита</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed">Ваши личные данные и переписки видны только вам и вашему собеседнику.</p>
-                </div>
-
-                <!-- Feature 3 -->
-                <div class="glass-card p-6 rounded-2xl hover:border-brand-500/50 transition-all group">
-                    <div class="w-12 h-12 rounded-xl bg-brand-500/10 text-brand-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/>
-                        </svg>
-                    </div>
-                    <h3 class="text-lg font-semibold text-white mb-2">Динамичный оранжевый стиль</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed">Приятный для глаз тёмный интерфейс с яркими акцентами, созданный для комфорта.</p>
-                </div>
-
-                <!-- Feature 4 -->
-                <div class="glass-card p-6 rounded-2xl hover:border-brand-500/50 transition-all group">
-                    <div class="w-12 h-12 rounded-xl bg-brand-500/10 text-brand-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
-                        </svg>
-                    </div>
-                    <h3 class="text-lg font-semibold text-white mb-2">Голос и Медиа</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed">Делитесь картинками, голосовыми сообщениями и файлами любого формата без потерь.</p>
-                </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fa-solid fa-gauge-high"></i></div>
+                <h3>Высокая скорость</h3>
+                <p>Мгновенная доставка сообщений и медиафайлов любого размера без сжатия.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fa-solid fa-palette"></i></div>
+                <h3>Кастомизация</h3>
+                <p>Настраивайте темы, шрифты и стили приложения полностью под себя.</p>
             </div>
         </div>
     </section>
 
-    <section id="network" class="py-12">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="glass-card rounded-3xl p-8 md:p-12 border border-brand-500/20 bg-gradient-to-r from-dark-800 via-dark-900 to-dark-800 flex flex-col md:flex-row items-center justify-between gap-8 relative overflow-hidden">
-                <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-brand-500/10 rounded-full blur-3xl pointer-events-none"></div>
-                
-                <div class="space-y-3 text-center md:text-left">
-                    <div class="inline-flex items-center space-x-2 text-brand-400 font-semibold text-sm">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7"/>
-                        </svg>
-                        <span>Надёжная инфраструктура</span>
-                    </div>
-                    <h3 class="text-2xl sm:text-3xl font-bold text-white">Стабильная сеть 24/7</h3>
-                    <p class="text-gray-400 max-w-xl text-sm sm:text-base">
-                        Velluma работает на распределённых серверах с высоким аптаймом и минимальным пингом для пользователей по всему миру.
-                    </p>
-                </div>
-
-                <div class="flex-shrink-0">
-                    <div class="px-6 py-4 rounded-2xl bg-dark-900/80 border border-gray-800 flex items-center space-x-4">
-                        <div class="w-3 h-3 rounded-full bg-emerald-500 animate-ping"></div>
-                        <div class="text-left">
-                            <span class="block text-xs text-gray-500 uppercase tracking-wider font-semibold">Статус сети</span>
-                            <span class="text-sm font-bold text-white">Все серверы онлайн</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="download" class="py-20">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 class="text-3xl font-bold text-white mb-4">Готовы начать пользоваться Velluma?</h2>
-            <p class="text-gray-400 max-w-xl mx-auto mb-10">Доступно на всех основных платформах. Синхронизация сообщений в реальном времени.</p>
-            
-            <div class="flex flex-wrap justify-center gap-4">
-                <button class="glass-card hover:border-brand-500/50 text-white font-medium px-6 py-3.5 rounded-xl transition-all flex items-center space-x-3">
-                    <svg class="w-6 h-6 text-brand-500" fill="currentColor" viewBox="0 0 24 24"><path d="M17.5 12a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/></svg>
-                    <div class="text-left">
-                        <div class="text-[10px] text-gray-400 uppercase">Скачать для</div>
-                        <div class="text-sm font-bold">Windows</div>
-                    </div>
-                </button>
-
-                <button class="glass-card hover:border-brand-500/50 text-white font-medium px-6 py-3.5 rounded-xl transition-all flex items-center space-x-3">
-                    <svg class="w-6 h-6 text-brand-500" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2z"/></svg>
-                    <div class="text-left">
-                        <div class="text-[10px] text-gray-400 uppercase">Скачать для</div>
-                        <div class="text-sm font-bold">Android / APK</div>
-                    </div>
-                </button>
-
-                <button class="orange-gradient-btn text-white font-medium px-6 py-3.5 rounded-xl transition-all shadow-glow flex items-center space-x-3">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9"/></svg>
-                    <div class="text-left">
-                        <div class="text-[10px] text-orange-200 uppercase">Запустить</div>
-                        <div class="text-sm font-bold">Web Версию</div>
-                    </div>
-                </button>
-            </div>
-        </div>
-    </section>
-
-    <footer class="bg-dark-900 border-t border-gray-800/80 py-10 mt-auto">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-col md:flex-row items-center justify-between gap-6">
-                <!-- Brand Footer -->
-                <div class="flex items-center space-x-3">
-                    <div class="w-8 h-8 rounded-lg orange-gradient-btn flex items-center justify-center">
-                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                        </svg>
-                    </div>
-                    <span class="text-lg font-bold text-white">Velluma</span>
-                </div>
-
-                <!-- Copyright -->
-                <div class="text-center text-sm text-gray-500">
-                    <p>© 2026 Velluma Messenger. Все права защищены.</p>
-                </div>
-
-                <!-- Footer Nav Links -->
-                <div class="flex space-x-6 text-sm text-gray-400">
-                    <a href="#" class="hover:text-brand-500 transition-colors">Политика конфиденциальности</a>
-                    <a href="#" class="hover:text-brand-500 transition-colors">Условия сервиса</a>
-                </div>
-            </div>
-        </div>
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 Velluma Messenger. Все права защищены.</p>
     </footer>
 
-    <script>
-        const menuBtn = document.getElementById('mobile-menu-btn');
-        const mobileMenu = document.getElementById('mobile-menu');
+    <!-- Creator Access Trigger -->
+    <div class="admin-trigger" onclick="toggleAdminModal()" title="Панель Создателя">
+        <i class="fa-solid fa-user-shield"></i>
+    </div>
 
-        menuBtn.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
+    <!-- Creator Modal -->
+    <div class="admin-modal" id="adminModal">
+        <div class="admin-box">
+            <i class="fa-solid fa-xmark admin-close" onclick="toggleAdminModal()"></i>
+            
+            <div class="admin-pin-screen" id="pinScreen">
+                <i class="fa-solid fa-lock" style="font-size: 40px; color: var(--primary-orange); margin-bottom: 16px;"></i>
+                <h3 style="margin-bottom: 8px;">Вход для Создателя</h3>
+                <p style="color: var(--text-muted); font-size: 14px;">Введите PIN-код доступа</p>
+                <input type="password" id="adminPin" maxlength="4" placeholder="••••">
+                <button class="btn" style="width: 100%; justify-content: center;" onclick="checkPin()">Войти</button>
+            </div>
+
+            <div class="admin-dashboard" id="adminDashboard">
+                <h3 style="margin-bottom: 16px; color: var(--primary-orange);"><i class="fa-solid fa-crown"></i> Панель Создателя</h3>
+                <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 20px;">Добро пожаловать, Создатель! Ваша панель готова к добавлению функций.</p>
+                
+                <div style="background: rgba(0,0,0,0.3); padding: 16px; border-radius: 12px; border: 1px dashed var(--card-border); text-align: center; color: var(--text-muted); font-size: 13px;">
+                    [ Здесь будут ваши элементы управления ]
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Interactive Canvas Background
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 3 + 1;
+                this.speedX = Math.random() * 1 - 0.5;
+                this.speedY = Math.random() * 1 - 0.5;
+                this.color = `rgba(255, 107, 0, ${Math.random() * 0.4 + 0.1})`;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.x > canvas.width) this.x = 0;
+                if (this.x < 0) this.x = canvas.width;
+                if (this.y > canvas.height) this.y = 0;
+                if (this.y < 0) this.y = canvas.height;
+            }
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < 60; i++) {
+            particles.push(new Particle());
+        }
+
+        function animateCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animateCanvas);
+        }
+        animateCanvas();
+
+        // 3D Card Tilt Effect
+        const card = document.getElementById('tilt-card');
+        window.addEventListener('mousemove', (e) => {
+            if (window.innerWidth < 968) return;
+            const x = (window.innerWidth / 2 - e.pageX) / 30;
+            const y = (window.innerHeight / 2 - e.pageY) / 30;
+            card.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
         });
 
-        const chatForm = document.getElementById('chat-form');
+        // Interactive Chat Demo
         const chatInput = document.getElementById('chat-input');
+        const sendBtn = document.getElementById('send-btn');
         const chatMessages = document.getElementById('chat-messages');
 
-        const botReplies = [
-            "Отлично! Velluma обрабатывает сообщения с высокой скоростью.",
-            "Это тестовое демо-сообщение. Скоро запустим полноценный Web App!",
-            "Спасибо за интерес к мессенджеру Velluma! 🧡",
-            "Наша сеть работает без задержек!"
-        ];
-
-        chatForm.addEventListener('submit', (e) => {
-            e.preventDefault();
+        function sendMessage() {
             const text = chatInput.value.trim();
             if (!text) return;
 
-            const now = new Date();
-            const timeStr = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
+            const userMsg = document.createElement('div');
+            userMsg.className = 'message msg-out';
+            userMsg.textContent = text;
+            chatMessages.appendChild(userMsg);
 
-            const userMsgHTML = `
-                <div class="flex items-start justify-end space-x-3">
-                    <div class="orange-gradient-btn text-white rounded-2xl rounded-tr-none p-3.5 max-w-xs sm:max-w-md text-sm shadow-md">
-                        ${escapeHtml(text)}
-                        <span class="block text-[10px] text-orange-200 mt-1 text-right">${timeStr} ✓✓</span>
-                    </div>
-                </div>
-            `;
-            chatMessages.insertAdjacentHTML('beforeend', userMsgHTML);
             chatInput.value = '';
             chatMessages.scrollTop = chatMessages.scrollHeight;
 
             setTimeout(() => {
-                const randomReply = botReplies[Math.floor(Math.random() * botReplies.length)];
-                const botMsgHTML = `
-                    <div class="flex items-start space-x-3">
-                        <div class="w-8 h-8 rounded-full bg-brand-600 flex-shrink-0 flex items-center justify-center text-xs font-bold text-white">
-                            V
-                        </div>
-                        <div class="bg-dark-800 text-gray-200 rounded-2xl rounded-tl-none p-3.5 max-w-xs sm:max-w-md text-sm border border-gray-800">
-                            ${randomReply}
-                            <span class="block text-[10px] text-gray-500 mt-1 text-right">${timeStr}</span>
-                        </div>
-                    </div>
-                `;
-                chatMessages.insertAdjacentHTML('beforeend', botMsgHTML);
+                const botMsg = document.createElement('div');
+                botMsg.className = 'message msg-in';
+                botMsg.textContent = 'Спасибо за сообщение! Velluma работает отлично ✨';
+                chatMessages.appendChild(botMsg);
                 chatMessages.scrollTop = chatMessages.scrollHeight;
             }, 800);
-        });
-
-        function escapeHtml(str) {
-            return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
         }
 
-        function scrollToDemo() {
-            document.getElementById('demo-chat').scrollIntoView({ behavior: 'smooth' });
+        sendBtn.addEventListener('click', sendMessage);
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') sendMessage();
+        });
+
+        // Admin Modal Controls
+        function toggleAdminModal() {
+            const modal = document.getElementById('adminModal');
+            modal.classList.toggle('active');
+        }
+
+        function checkPin() {
+            const pin = document.getElementById('adminPin').value;
+            if (pin === '1234') { // PIN по умолчанию: 1234
+                document.getElementById('pinScreen').style.display = 'none';
+                document.getElementById('adminDashboard').style.display = 'block';
+            } else {
+                alert('Неверный PIN-код!');
+            }
         }
     </script>
 </body>
